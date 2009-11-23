@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDE", "WDE\WDE.csproj", "{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E} = {C2A80328-ABA3-49A2-B346-153CAC8E7A9E}
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57} = {2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\..\3rdParty\Windows API Code Pack\WindowsAPICodePack\Core\Core.csproj", "{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "..\..\3rdParty\Windows API Code Pack\WindowsAPICodePack\Shell\Shell.csproj", "{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CodeAnalysisDebug|Any CPU = CodeAnalysisDebug|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.CodeAnalysisDebug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.CodeAnalysisDebug|Any CPU.Build.0 = Debug
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Debug|Any CPU.ActiveCfg = Debug
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Release|Any CPU.ActiveCfg = Release
+		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Release|Any CPU.Build.0 = Release
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}.CodeAnalysisDebug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1FB0DF-F9BB-4909-9F32-2D9D022A8E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}.CodeAnalysisDebug|Any CPU.ActiveCfg = CodeAnalysisDebug|Any CPU
+		{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}.CodeAnalysisDebug|Any CPU.Build.0 = CodeAnalysisDebug|Any CPU
+		{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0C00CB-8699-4F37-BFAE-40CA87ACC06D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SpecExplorer.ActivityCompletionStatus) = preSolution
+		SpecExplorer.ActivityCompletionStatus = 
+	EndGlobalSection
+EndGlobal
