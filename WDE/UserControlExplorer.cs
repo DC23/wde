@@ -13,9 +13,11 @@ using jd.Helper.Configuration;
 
 namespace WDE
 {
+    public delegate void MyDelegate(object sender, EventArgs e);
 
     public partial class UserControlExplorer : UserControl
     {
+        public event MyDelegate MyEvent;
 
         private ApplicationSettings applicationSettings = null;
         private string sectionName = "";
@@ -28,7 +30,7 @@ namespace WDE
         private TabControl currentTabControl;
 
 
-        public UserControlExplorer(int id, ApplicationSettings applicationSettingsValue, string name, TabControl destTabControl, TabPage tabPage)
+        public UserControlExplorer(string newSectionName, ApplicationSettings applicationSettingsValue, string name, TabControl destTabControl, TabPage tabPage)
         {
             InitializeComponent();
 
@@ -37,7 +39,7 @@ namespace WDE
             currentTabControl = destTabControl;
 
             if (name == "")
-                sectionName = "UserExplorerControl" + id.ToString();
+                sectionName = newSectionName; //"UserExplorerControl" + id.ToString();
             else
                 sectionName = name;
 
@@ -116,7 +118,6 @@ namespace WDE
             {
                 string fav = applicationSettings.sections[sectionID].settings[i].Name;
                 string favValue = applicationSettings.sections[sectionID].settings[i].Value;
-                //    MessageBox.Show(fav+" "+favValue);
                 CreateFavButton(System.IO.Path.GetFileName(fav), favValue, flowLayoutPanel);
             }
 
@@ -184,12 +185,18 @@ namespace WDE
 
         private void UserControlExplorer_Load(object sender, EventArgs e)
         {
-            if (LastPath == "")
-                explorerBrowser.Navigate((ShellObject)KnownFolders.Desktop);
-            else
-                explorerBrowser.Navigate(ShellFileSystemFolder.FromFolderPath(LastPath));
+            try
+            {
+                if (LastPath == "")
+                    explorerBrowser.Navigate((ShellObject)KnownFolders.Desktop);
+                else
+                    explorerBrowser.Navigate(ShellFileSystemFolder.FromFolderPath(LastPath));
 
-            RefreshApp();
+                RefreshApp();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private string GetRootDriveFromPath(string path)
@@ -214,15 +221,27 @@ namespace WDE
         {
             string driveletter = GetRootDriveFromPath(tsddbtn.Text);
             if (driveletter != "")
-                explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(driveletter));
-
+            {
+                try
+                {
+                    explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(driveletter));
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
 
         private void tsbUp_Click(object sender, EventArgs e)
         {
-            if (explorerBrowser.NavigationLog.CurrentLocation.Parent != null)
-                explorerBrowser.Navigate(explorerBrowser.NavigationLog.CurrentLocation.Parent);
-
+            try
+            {
+                if (explorerBrowser.NavigationLog.CurrentLocation.Parent != null)
+                    explorerBrowser.Navigate(explorerBrowser.NavigationLog.CurrentLocation.Parent);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void tsbBack_Click(object sender, EventArgs e)
@@ -276,12 +295,13 @@ namespace WDE
             //Console.WriteLine(s[0]);
 
             e.Effect = DragDropEffects.Link;
-
         }
 
         private void explorerBrowser_Enter(object sender, EventArgs e)
         {
-            FormMain.setUserControlExplorer(this, currentTabControl);
+            this.OnMyEvent();
+         
+            //FormMain.setUserControlExplorer(this, currentTabControl);
         }
 
         private void explorerBrowser_KeyDown(object sender, KeyEventArgs e)
@@ -318,7 +338,8 @@ namespace WDE
                     this.pathChanged(location, this);
             }));
 
-            FormMain.setUserControlExplorer(this, currentTabControl);
+            this.OnMyEvent();
+            //FormMain.setUserControlExplorer(this, currentTabControl);
         }
 
         private void explorerBrowser_SelectionChanged(object sender, EventArgs e)
@@ -338,7 +359,8 @@ namespace WDE
             //    //this.itemsTabControl.TabPages[1].Text = "Selected Items (Count=" + explorerBrowser1.SelectedItems.Count.ToString() + ")";
             //}));
 
-            FormMain.setUserControlExplorer(this, currentTabControl);
+            this.OnMyEvent();
+            //FormMain.setUserControlExplorer(this, currentTabControl);
 
             tsbViewer.Enabled = explorerBrowser.SelectedItems[0] != null;
             tsbDel.Enabled = tsbViewer.Enabled;
@@ -347,11 +369,16 @@ namespace WDE
 
         private void tsbSwitch_Click(object sender, EventArgs e)
         {
-            if (FormMain.current_uce1.explorerBrowser.NavigationLog.CurrentLocation == explorerBrowser.NavigationLog.CurrentLocation)
-                explorerBrowser.Navigate(FormMain.current_uce2.explorerBrowser.NavigationLog.CurrentLocation);
-            else
-                explorerBrowser.Navigate(FormMain.current_uce1.explorerBrowser.NavigationLog.CurrentLocation);
-
+            try
+            {
+                if (FormMain.current_uce1.explorerBrowser.NavigationLog.CurrentLocation == explorerBrowser.NavigationLog.CurrentLocation)
+                    explorerBrowser.Navigate(FormMain.current_uce2.explorerBrowser.NavigationLog.CurrentLocation);
+                else
+                    explorerBrowser.Navigate(FormMain.current_uce1.explorerBrowser.NavigationLog.CurrentLocation);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void tsbDel_Click(object sender, EventArgs e)
@@ -636,7 +663,14 @@ namespace WDE
             string dir = (sender as ToolStripMenuItem).ToolTipText;
 
             //if ((int)(sender as ToolStripMenuItem).Tag == 1)
-            explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(dir));
+            try
+            {
+                explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(dir));
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         public void RefreshApp()
@@ -669,9 +703,15 @@ namespace WDE
 
             }));
             //explorerBrowser1.Focus();
-            FormMain.setUserControlExplorer(this, currentTabControl);
+            this.OnMyEvent();
+            //FormMain.setUserControlExplorer(this, currentTabControl);
         }
 
+        private void OnMyEvent()
+        {
+            if (this.MyEvent != null)
+                this.MyEvent(this, null);
+        }
     }
 
  

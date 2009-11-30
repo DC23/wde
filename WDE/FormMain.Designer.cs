@@ -43,19 +43,21 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStripRemoveFav = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.navigationHistoryCombo = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiViewToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.mainToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoritesToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.explorer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiViewToolbar1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiViewStatusbar1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +66,16 @@
             this.tsmiViewStatusbar2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layout1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layout2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHideExplorer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHideExplorer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.openExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jumpToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
@@ -77,19 +89,11 @@
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.switchExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layout1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layout2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showHideExplorer1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showHideExplorer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.jumpToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.cmsTabControl.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.contextMenuStripRemoveFav.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.menuStripMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,17 +101,18 @@
             // 
             this.splitter.BackColor = System.Drawing.SystemColors.Control;
             this.splitter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter.Location = new System.Drawing.Point(0, 318);
+            this.splitter.Location = new System.Drawing.Point(0, 351);
             this.splitter.Name = "splitter";
-            this.splitter.Size = new System.Drawing.Size(784, 4);
+            this.splitter.Size = new System.Drawing.Size(784, 3);
             this.splitter.TabIndex = 2;
             this.splitter.TabStop = false;
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.tabControl1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 49);
+            this.panel1.Location = new System.Drawing.Point(0, 82);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(784, 269);
             this.panel1.TabIndex = 0;
@@ -116,12 +121,16 @@
             // 
             this.tabControl1.ContextMenuStrip = this.cmsTabControl;
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.ImageList = this.imageListTabControl;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(3, 3);
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(784, 269);
             this.tabControl1.TabIndex = 26;
+            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // cmsTabControl
@@ -195,18 +204,18 @@
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
-            // contextMenuStrip1
+            // contextMenuStripRemoveFav
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuStripRemoveFav.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(102, 26);
+            this.contextMenuStripRemoveFav.Name = "contextMenuStrip1";
+            this.contextMenuStripRemoveFav.Size = new System.Drawing.Size(118, 26);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.clearToolStripMenuItem.Text = "Remove";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // navigationHistoryCombo
@@ -221,11 +230,12 @@
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.tabControl2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 322);
+            this.panel2.Location = new System.Drawing.Point(0, 354);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(784, 369);
+            this.panel2.Size = new System.Drawing.Size(784, 337);
             this.panel2.TabIndex = 18;
             // 
             // tabControl2
@@ -234,10 +244,14 @@
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.ImageList = this.imageListTabControl;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Multiline = true;
             this.tabControl2.Name = "tabControl2";
+            this.tabControl2.Padding = new System.Drawing.Point(3, 3);
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(784, 369);
+            this.tabControl2.Size = new System.Drawing.Size(784, 337);
             this.tabControl2.TabIndex = 25;
+            this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
+            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
             // toolStripSeparator6
             // 
@@ -249,18 +263,36 @@
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
-            // menuStrip1
+            // flowLayoutPanel
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.flowLayoutPanel.AllowDrop = true;
+            this.flowLayoutPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel.Location = new System.Drawing.Point(0, 49);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(784, 33);
+            this.flowLayoutPanel.TabIndex = 24;
+            this.toolTip.SetToolTip(this.flowLayoutPanel, "Drag your favorites folders here");
+            this.flowLayoutPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragDrop);
+            this.flowLayoutPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragEnter);
+            // 
+            // menuStripMain
+            // 
+            this.menuStripMain.AllowDrop = true;
+            this.menuStripMain.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.tsmiViewToolbar,
+            this.jumpToToolStripMenuItem,
+            this.favoritesToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
-            this.menuStrip1.TabIndex = 19;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStripMain.Location = new System.Drawing.Point(0, 0);
+            this.menuStripMain.Name = "menuStripMain";
+            this.menuStripMain.Size = new System.Drawing.Size(784, 24);
+            this.menuStripMain.TabIndex = 19;
+            this.menuStripMain.Text = "Main Menu";
+            this.menuStripMain.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragEnter);
+            this.menuStripMain.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragDrop);
             // 
             // fileToolStripMenuItem
             // 
@@ -284,6 +316,7 @@
             // 
             this.tsmiViewToolbar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mainToolbarToolStripMenuItem,
+            this.favoritesToolbarToolStripMenuItem,
             this.explorer1ToolStripMenuItem,
             this.explorer2ToolStripMenuItem,
             this.toolStripMenuItem1,
@@ -292,8 +325,8 @@
             this.layoutToolStripMenuItem,
             this.showHideExplorer1ToolStripMenuItem,
             this.showHideExplorer2ToolStripMenuItem,
-            this.openExplorerToolStripMenuItem,
-            this.jumpToToolStripMenuItem});
+            this.toolStripMenuItem2,
+            this.openExplorerToolStripMenuItem});
             this.tsmiViewToolbar.Name = "tsmiViewToolbar";
             this.tsmiViewToolbar.Size = new System.Drawing.Size(44, 20);
             this.tsmiViewToolbar.Text = "View";
@@ -304,9 +337,19 @@
             this.mainToolbarToolStripMenuItem.CheckOnClick = true;
             this.mainToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.mainToolbarToolStripMenuItem.Name = "mainToolbarToolStripMenuItem";
-            this.mainToolbarToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.mainToolbarToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.mainToolbarToolStripMenuItem.Text = "Main Toolbar";
             this.mainToolbarToolStripMenuItem.Click += new System.EventHandler(this.mainToolbarToolStripMenuItem_Click);
+            // 
+            // favoritesToolbarToolStripMenuItem
+            // 
+            this.favoritesToolbarToolStripMenuItem.Checked = true;
+            this.favoritesToolbarToolStripMenuItem.CheckOnClick = true;
+            this.favoritesToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.favoritesToolbarToolStripMenuItem.Name = "favoritesToolbarToolStripMenuItem";
+            this.favoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.favoritesToolbarToolStripMenuItem.Text = "Favorites Toolbar";
+            this.favoritesToolbarToolStripMenuItem.Click += new System.EventHandler(this.favoritesToolbarToolStripMenuItem_Click);
             // 
             // explorer1ToolStripMenuItem
             // 
@@ -314,7 +357,7 @@
             this.tsmiViewToolbar1,
             this.tsmiViewStatusbar1});
             this.explorer1ToolStripMenuItem.Name = "explorer1ToolStripMenuItem";
-            this.explorer1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.explorer1ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.explorer1ToolStripMenuItem.Text = "Explorer 1";
             this.explorer1ToolStripMenuItem.Visible = false;
             // 
@@ -342,7 +385,7 @@
             this.tsmiViewToolbar2,
             this.tsmiViewStatusbar2});
             this.explorer2ToolStripMenuItem.Name = "explorer2ToolStripMenuItem";
-            this.explorer2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.explorer2ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.explorer2ToolStripMenuItem.Text = "Explorer 2";
             this.explorer2ToolStripMenuItem.Visible = false;
             // 
@@ -367,14 +410,96 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 6);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Visible = false;
+            // 
+            // switchExplorerToolStripMenuItem
+            // 
+            this.switchExplorerToolStripMenuItem.Image = global::WDE.Properties.Resources._switch;
+            this.switchExplorerToolStripMenuItem.Name = "switchExplorerToolStripMenuItem";
+            this.switchExplorerToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.switchExplorerToolStripMenuItem.Text = "Switch Explorer";
+            this.switchExplorerToolStripMenuItem.Click += new System.EventHandler(this.tsbSwitch_Click_1);
+            // 
+            // layoutToolStripMenuItem
+            // 
+            this.layoutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.layout1ToolStripMenuItem,
+            this.layout2ToolStripMenuItem});
+            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
+            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.layoutToolStripMenuItem.Text = "Layout";
+            // 
+            // layout1ToolStripMenuItem
+            // 
+            this.layout1ToolStripMenuItem.Image = global::WDE.Properties.Resources.layout1;
+            this.layout1ToolStripMenuItem.Name = "layout1ToolStripMenuItem";
+            this.layout1ToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.layout1ToolStripMenuItem.Text = "Layout 1";
+            this.layout1ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // layout2ToolStripMenuItem
+            // 
+            this.layout2ToolStripMenuItem.Image = global::WDE.Properties.Resources.layout2;
+            this.layout2ToolStripMenuItem.Name = "layout2ToolStripMenuItem";
+            this.layout2ToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.layout2ToolStripMenuItem.Text = "Layout 2";
+            this.layout2ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // showHideExplorer1ToolStripMenuItem
+            // 
+            this.showHideExplorer1ToolStripMenuItem.Checked = true;
+            this.showHideExplorer1ToolStripMenuItem.CheckOnClick = true;
+            this.showHideExplorer1ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showHideExplorer1ToolStripMenuItem.Image = global::WDE.Properties.Resources._1;
+            this.showHideExplorer1ToolStripMenuItem.Name = "showHideExplorer1ToolStripMenuItem";
+            this.showHideExplorer1ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.showHideExplorer1ToolStripMenuItem.Text = "Show/Hide Explorer 1";
+            this.showHideExplorer1ToolStripMenuItem.Click += new System.EventHandler(this.showHideExplorer1ToolStripMenuItem_Click);
+            // 
+            // showHideExplorer2ToolStripMenuItem
+            // 
+            this.showHideExplorer2ToolStripMenuItem.Checked = true;
+            this.showHideExplorer2ToolStripMenuItem.CheckOnClick = true;
+            this.showHideExplorer2ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showHideExplorer2ToolStripMenuItem.Image = global::WDE.Properties.Resources._2;
+            this.showHideExplorer2ToolStripMenuItem.Name = "showHideExplorer2ToolStripMenuItem";
+            this.showHideExplorer2ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.showHideExplorer2ToolStripMenuItem.Text = "Show/Hide Explorer 2";
+            this.showHideExplorer2ToolStripMenuItem.Click += new System.EventHandler(this.showHideExplorer2ToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(184, 6);
+            // 
+            // openExplorerToolStripMenuItem
+            // 
+            this.openExplorerToolStripMenuItem.Image = global::WDE.Properties.Resources.explorer;
+            this.openExplorerToolStripMenuItem.Name = "openExplorerToolStripMenuItem";
+            this.openExplorerToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.openExplorerToolStripMenuItem.Text = "Open Explorer";
+            this.openExplorerToolStripMenuItem.Click += new System.EventHandler(this.tsbExplorer_Click);
+            // 
+            // jumpToToolStripMenuItem
+            // 
+            this.jumpToToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.jumpToToolStripMenuItem.Name = "jumpToToolStripMenuItem";
+            this.jumpToToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.jumpToToolStripMenuItem.Text = "Known Folders";
+            // 
+            // favoritesToolStripMenuItem
+            // 
+            this.favoritesToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.favoritesToolStripMenuItem.Name = "favoritesToolStripMenuItem";
+            this.favoritesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.favoritesToolStripMenuItem.Text = "Favorites";
             // 
             // helpToolStripMenuItem
             // 
@@ -505,80 +630,19 @@
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
-            // switchExplorerToolStripMenuItem
-            // 
-            this.switchExplorerToolStripMenuItem.Image = global::WDE.Properties.Resources._switch;
-            this.switchExplorerToolStripMenuItem.Name = "switchExplorerToolStripMenuItem";
-            this.switchExplorerToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.switchExplorerToolStripMenuItem.Text = "Switch Explorer";
-            this.switchExplorerToolStripMenuItem.Click += new System.EventHandler(this.tsbSwitch_Click_1);
-            // 
-            // layoutToolStripMenuItem
-            // 
-            this.layoutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.layout1ToolStripMenuItem,
-            this.layout2ToolStripMenuItem});
-            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
-            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.layoutToolStripMenuItem.Text = "Layout";
-            // 
-            // layout1ToolStripMenuItem
-            // 
-            this.layout1ToolStripMenuItem.Image = global::WDE.Properties.Resources.layout1;
-            this.layout1ToolStripMenuItem.Name = "layout1ToolStripMenuItem";
-            this.layout1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layout1ToolStripMenuItem.Text = "Layout 1";
-            this.layout1ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // layout2ToolStripMenuItem
-            // 
-            this.layout2ToolStripMenuItem.Image = global::WDE.Properties.Resources.layout2;
-            this.layout2ToolStripMenuItem.Name = "layout2ToolStripMenuItem";
-            this.layout2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.layout2ToolStripMenuItem.Text = "Layout 2";
-            this.layout2ToolStripMenuItem.Click += new System.EventHandler(this.toolStripButton2_Click);
-            // 
-            // showHideExplorer1ToolStripMenuItem
-            // 
-            this.showHideExplorer1ToolStripMenuItem.Image = global::WDE.Properties.Resources._1;
-            this.showHideExplorer1ToolStripMenuItem.Name = "showHideExplorer1ToolStripMenuItem";
-            this.showHideExplorer1ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.showHideExplorer1ToolStripMenuItem.Text = "Show/Hide Explorer 1";
-            this.showHideExplorer1ToolStripMenuItem.Click += new System.EventHandler(this.tsbShowHide1_Click);
-            // 
-            // showHideExplorer2ToolStripMenuItem
-            // 
-            this.showHideExplorer2ToolStripMenuItem.Image = global::WDE.Properties.Resources._2;
-            this.showHideExplorer2ToolStripMenuItem.Name = "showHideExplorer2ToolStripMenuItem";
-            this.showHideExplorer2ToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.showHideExplorer2ToolStripMenuItem.Text = "Show/Hide Explorer 2";
-            this.showHideExplorer2ToolStripMenuItem.Click += new System.EventHandler(this.tsbShowHide2_Click);
-            // 
-            // openExplorerToolStripMenuItem
-            // 
-            this.openExplorerToolStripMenuItem.Image = global::WDE.Properties.Resources.explorer;
-            this.openExplorerToolStripMenuItem.Name = "openExplorerToolStripMenuItem";
-            this.openExplorerToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.openExplorerToolStripMenuItem.Text = "Open Explorer";
-            this.openExplorerToolStripMenuItem.Click += new System.EventHandler(this.tsbExplorer_Click);
-            // 
-            // jumpToToolStripMenuItem
-            // 
-            this.jumpToToolStripMenuItem.Name = "jumpToToolStripMenuItem";
-            this.jumpToToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.jumpToToolStripMenuItem.Text = "Jump to";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(784, 691);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.splitter);
-            this.Controls.Add(this.navigationHistoryCombo);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.navigationHistoryCombo);
+            this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.tsMain);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FormMain";
@@ -589,10 +653,10 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
             this.panel1.ResumeLayout(false);
             this.cmsTabControl.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.contextMenuStripRemoveFav.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStripMain.ResumeLayout(false);
+            this.menuStripMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
             this.ResumeLayout(false);
@@ -603,13 +667,12 @@
         #endregion
 
         private System.Windows.Forms.Splitter splitter;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripRemoveFav;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ComboBox navigationHistoryCombo;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStripMain;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStrip tsMain;
         private System.Windows.Forms.ToolStripButton tsbLayout1;
@@ -630,18 +693,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripButton tsbShowHide1;
         private System.Windows.Forms.ToolStripButton tsbShowHide2;
-        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar;
-        private System.Windows.Forms.ToolStripMenuItem mainToolbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem explorer1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar1;
-        private System.Windows.Forms.ToolStripMenuItem tsmiViewStatusbar1;
-        private System.Windows.Forms.ToolStripMenuItem explorer2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar2;
-        private System.Windows.Forms.ToolStripMenuItem tsmiViewStatusbar2;
         private System.Windows.Forms.ToolStripButton tsbSwitch;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.ImageList imageListTabControl;
@@ -649,6 +702,20 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiNewTab;
         private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiLockTab;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        private System.Windows.Forms.ToolStripMenuItem jumpToToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem favoritesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar;
+        private System.Windows.Forms.ToolStripMenuItem mainToolbarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem favoritesToolbarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem explorer1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiViewStatusbar1;
+        private System.Windows.Forms.ToolStripMenuItem explorer2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar2;
+        private System.Windows.Forms.ToolStripMenuItem tsmiViewStatusbar2;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem switchExplorerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem layout1ToolStripMenuItem;
@@ -656,7 +723,8 @@
         private System.Windows.Forms.ToolStripMenuItem showHideExplorer1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showHideExplorer2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openExplorerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem jumpToToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        public System.Windows.Forms.Panel panel1;
 
     }
 }

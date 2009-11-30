@@ -19,9 +19,17 @@ namespace WDE
 {
     public partial class FormMain : Form
     {
+        [DllImport("user32.dll",CharSet=CharSet.Auto, CallingConvention=CallingConvention.StdCall)]
+        public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
+        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        private const int MOUSEEVENTF_RIGHTUP = 0x10;
+
+        
         const int TOPOFEACHOTHER = 1;
         const int NEXTTOEACHOTHER = 2;
-        int TabSheetCounter = 0;
+        //int TabSheetCounter = 0;
         static public UserControlExplorer current_uce = null;
         static public UserControlExplorer current_uce1 = null;
         static public UserControlExplorer current_uce2 = null;
@@ -85,6 +93,12 @@ namespace WDE
             Left = Properties.Settings.Default.FormL;
             Top = Properties.Settings.Default.FormT;
 
+            if (Left < 0)
+                Left = 0;
+            if (Top < 0)
+                Top = 0;
+
+
             if (this.Height < 50)
                 this.Height = 700;
             if (this.Width < 50)
@@ -103,9 +117,16 @@ namespace WDE
             foreach (string s in knownFolderList)
             {
                 ToolStripMenuItem tsmi = new ToolStripMenuItem(s);
-
-
                 jumpToToolStripMenuItem.DropDownItems.Add(s, null, jumpTo_Click);
+            }
+
+
+            if (Properties.Settings.Default.Favs != null)
+            {
+                foreach (string fav in Properties.Settings.Default.Favs)
+                {
+                    CreateFavButton(System.IO.Path.GetFileName(fav), fav, flowLayoutPanel);
+                }
             }
 
 
@@ -128,6 +149,13 @@ namespace WDE
                 tsmiViewToolbar1.Checked = false;
                 tsmiViewToolbar1.CheckState = CheckState.Unchecked;
                 //flowLayoutPanel1.Visible = false;
+            }
+
+            if (!Properties.Settings.Default.ViewFavToolbar)
+            {
+                favoritesToolbarToolStripMenuItem.Checked = false;
+                favoritesToolbarToolStripMenuItem.CheckState = CheckState.Unchecked;
+                flowLayoutPanel.Visible = false;
             }
         }
 
@@ -192,14 +220,6 @@ namespace WDE
 
 
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string mycaption = (contextMenuStrip1.SourceControl as Button).Text;
-            string mypath = toolTip1.GetToolTip(contextMenuStrip1.SourceControl as Button);
-
-            (contextMenuStrip1.SourceControl as Button).Dispose();
-        }
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -208,7 +228,7 @@ namespace WDE
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
-            MessageBox.Show(e.KeyData.ToString());
+            //MessageBox.Show(e.KeyData.ToString());
         }
 
 
@@ -239,7 +259,7 @@ namespace WDE
             ClearLayout();
 
             panel1.Dock = DockStyle.Top;
-            panel1.Height = (this.Height - menuStrip1.Height - tsMain.Height) / 2;
+            panel1.Height = (this.Height - menuStripMain.Height - tsMain.Height) / 2;
             splitter.Dock = DockStyle.Top;
             panel2.Dock = DockStyle.Fill;
 
@@ -274,25 +294,6 @@ namespace WDE
             layout2ToolStripMenuItem.Checked = tsbLayout2.Checked;
         }
 
-        private void tsbShowHide1_Click(object sender, EventArgs e)
-        {
-            panel1.Visible = tsbShowHide1.Checked;
-
-            if (!panel1.Visible)
-                panel2.Visible = true;
-
-            AjustPanel();
-        }
-
-        private void tsbShowHide2_Click(object sender, EventArgs e)
-        {
-            panel2.Visible = tsbShowHide2.Checked;
-
-            if (!panel2.Visible)
-                panel1.Visible = true;
-
-            AjustPanel();
-        }
 
         private void AjustPanel()
         {
@@ -317,16 +318,6 @@ namespace WDE
 
             obj.Visible = tsmi.CheckState == CheckState.Checked;
 
-        }
-
-        private void mainToolbarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (tsmiViewToolbar.CheckState == CheckState.Checked)
-                tsmiViewToolbar.CheckState = CheckState.Unchecked;
-            else
-                tsmiViewToolbar.CheckState = CheckState.Checked;
-
-            tsMain.Visible = tsmiViewToolbar.CheckState == CheckState.Unchecked;
         }
 
         private void tsmiViewToolbar1_Click(object sender, EventArgs e)
@@ -362,18 +353,6 @@ namespace WDE
             uce.Parent.Text = pathname;
         }
 
-        private void AddExplorer(TabControl DestinationTabControl, string name)
-        {
-            TabSheetCounter++;
-
-            TabPage newTabPage = new TabPage();
-            DestinationTabControl.TabPages.Add(newTabPage);
-
-            UserControlExplorer uce = new UserControlExplorer(TabSheetCounter, applicationSettings, name, DestinationTabControl, newTabPage);
-            uce.Parent = newTabPage;
-            uce.Dock = DockStyle.Fill;
-            uce.pathChanged += new UserControlExplorer.PathChanged(this.path_Changed);
-        }
 
         private void toolStripButton1_Click_1(object sender, EventArgs e)
         {
@@ -408,6 +387,10 @@ namespace WDE
         private void cmsTabControl_Opening(object sender, CancelEventArgs e)
         {
             TabControl tc = (cmsTabControl.SourceControl as TabControl);
+
+            if (tc == null)
+                return;
+
             tsmiLockTab.Checked = (tc.SelectedTab.ImageIndex == 0);
 
 
@@ -429,16 +412,6 @@ namespace WDE
         }
 
 
-        static public void setUserControlExplorer(UserControlExplorer uce, TabControl tabControl)
-        {
-            current_uce = uce;
-
-            if (tabControl.Name == "tabControl1")
-                current_uce1 = uce;
-            else
-                current_uce2 = uce;
-        }
-
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -447,6 +420,7 @@ namespace WDE
                 //MessageBox.Show((tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer).Name);
                 current_uce1 = (tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
                 current_uce = current_uce1;
+                MarkTabControl(tabControl1.Name);
             }
             catch (Exception)
             {
@@ -471,6 +445,301 @@ namespace WDE
             }
         }
 
+        private void flowLayoutPanel_DragEnter(object sender, DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            //Console.WriteLine(s[0]);
+
+            e.Effect = DragDropEffects.Link;
+
+        }
+
+        private void flowLayoutPanel_DragDrop(object sender, DragEventArgs e)
+        {
+            //String[] Params = (String[])e.Data.GetData(DataFormats.FileDrop);
+            //string myParam = Params[0];
+            //string myDir;
+            //string myDirCaption;
+
+            //if (System.IO.File.Exists(myParam))
+            //    myDir = System.IO.Path.GetDirectoryName(myParam);
+            //else
+            //    myDir = System.IO.Path.GetFullPath(myParam);
+
+            //myDirCaption = System.IO.Path.GetFileName(myDir);
+
+            //if (myDirCaption == "")
+            //    myDirCaption = myDir;
+
+
+            //int i = applicationSettings.sections.GetItemIDByString(sectionName, "FAV");
+            //if (i >= 0)
+            //    applicationSettings.sections[i].settings.Add(myDirCaption, myDir);
+
+
+            //            if (sender.GetType().Name == "ToolStrip")
+            //{
+            //    CreateFavButton(myDirCaption, myDir, flowLayoutPanel);
+            //}
+
+            String[] Params = (String[])e.Data.GetData(DataFormats.FileDrop);
+            string myParam = Params[0];
+            string myDir;
+            string myDirCaption;
+
+            if (System.IO.File.Exists(myParam))
+                myDir = System.IO.Path.GetDirectoryName(myParam);
+            else
+                myDir = System.IO.Path.GetFullPath(myParam);
+
+            myDirCaption = System.IO.Path.GetFileName(myDir);
+
+            Properties.Settings.Default.Favs.Add(myDir);
+
+            //if (sender.GetType().Name == "ToolStrip")
+            CreateFavButton(myDirCaption, myDir, flowLayoutPanel);
+        }
+
+        private void CreateFavButton(string FavText, string FavPath, FlowLayoutPanel flp)
+        {
+            ToolStripMenuItem item = new ToolStripMenuItem(FavPath, WDE.Properties.Resources.StartSmal, myFav_Click);
+            ToolStripMenuItem itemDel = new ToolStripMenuItem("Remove from Favorites", WDE.Properties.Resources.trash, myFavRemove_Click);
+            itemDel.ToolTipText = FavPath;
+            itemDel.Tag = FavText;
+            item.DropDownItems.Add(itemDel);
+            //item.DropDownItems.Add("remove", null, myFavRemove_Click);
+            favoritesToolStripMenuItem.DropDownItems.Add(item);
+
+            System.Windows.Forms.Button mybtn = new System.Windows.Forms.Button();
+            mybtn.Parent = flp;
+            if (FavText == "")
+                FavText = FavPath;
+            mybtn.Text = FavText;
+            mybtn.Tag = 1;
+            toolTip.SetToolTip(mybtn, FavPath);
+            mybtn.FlatStyle = FlatStyle.Flat;
+            mybtn.Click += new System.EventHandler(mybtn_Click);
+            mybtn.ContextMenuStrip = contextMenuStripRemoveFav;
+            mybtn.AutoSize = true;
+            mybtn.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        }
+
+        private void myFav_Click(object sender, EventArgs e)
+        {
+            string pfad = (sender as ToolStripMenuItem).Text;
+            if (pfad != "")
+            {
+                try
+                {
+                    current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+                }
+                catch (Exception) { }
+            }
+        }
+
+
+        private void mybtn_Click(object sender, EventArgs e)
+        {
+            string pfad = toolTip.GetToolTip(sender as Button);
+            if (pfad != "")
+            {
+                try
+                {
+                    current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+                }
+                catch (Exception) { }
+            }
+        }
+
+        private void RemoveFavItem(string name)
+        {
+            foreach (ToolStripMenuItem  item in favoritesToolStripMenuItem.DropDownItems)
+            {
+                if (item.Text == name)
+                {
+                    item.DropDownItems.Clear();
+                    item.Dispose();
+                    return;
+                }
+            }
+        }
+
+        private void RemoveFavItemFromFlowPanel(string name)
+        {
+            foreach (Control myControl in flowLayoutPanel.Controls)
+                {
+                if (myControl.Text == name)
+                {
+                    myControl.Dispose();
+                    return;
+                }
+            }
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string mycaption = (contextMenuStripRemoveFav.SourceControl as Button).Text;
+            string mypath = toolTip.GetToolTip(contextMenuStripRemoveFav.SourceControl as Button);
+
+            RemoveFavItem(mypath);
+
+            Properties.Settings.Default.Favs.Remove(mypath);
+
+            (contextMenuStripRemoveFav.SourceControl as Button).Dispose();
+        }
+
+
+        private void myFavRemove_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (sender as ToolStripMenuItem);
+            string mycaption = item.Tag.ToString();
+            string mypath = item.ToolTipText;
+
+            RemoveFavItem(mypath);
+            RemoveFavItemFromFlowPanel(mycaption);
+
+            Properties.Settings.Default.Favs.Remove(mypath);
+        }
+
+        private void mainToolbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsMain.Visible = mainToolbarToolStripMenuItem.Checked;
+            if (tsMain.Visible)
+            {
+                tsMain.BringToFront();
+                flowLayoutPanel.BringToFront();
+                OrderLayout();
+            }
+        }
+
+        private void favoritesToolbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //if (favoritesToolbarToolStripMenuItem.CheckState == CheckState.Checked)
+            //    favoritesToolbarToolStripMenuItem.CheckState = CheckState.Unchecked;
+            //else
+            //    favoritesToolbarToolStripMenuItem.CheckState = CheckState.Checked;
+
+            flowLayoutPanel.Visible = favoritesToolbarToolStripMenuItem.Checked;
+            Properties.Settings.Default.ViewFavToolbar = favoritesToolbarToolStripMenuItem.Checked;
+
+            if (flowLayoutPanel.Visible)
+            {
+                tsMain.BringToFront();
+                flowLayoutPanel.BringToFront();
+                OrderLayout();
+            }
+        }
+
+        private void tabControl2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                //Console.WriteLine("right click");
+                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, e.X, e.Y, 0, 0);
+            }
+        }
+
+        private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string sectionName = tabControl2.SelectedTab.Tag.ToString();
+                current_uce2 = (tabControl2.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
+                current_uce = current_uce2;
+                MarkTabControl(tabControl2.Name);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void tsbShowHide1_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = tsbShowHide1.Checked;
+
+            if (!panel1.Visible)
+            {
+                panel2.Visible = true;
+                tsbShowHide2.Checked = true;
+            }
+
+            showHideExplorer1ToolStripMenuItem.Checked = tsbShowHide1.Checked;
+            showHideExplorer2ToolStripMenuItem.Checked = tsbShowHide2.Checked;
+
+            AjustPanel();
+        }
+
+        private void tsbShowHide2_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = tsbShowHide2.Checked;
+
+            if (!panel2.Visible)
+            {
+                panel1.Visible = true;
+                tsbShowHide1.Checked = true;
+
+            }
+
+            showHideExplorer1ToolStripMenuItem.Checked = tsbShowHide1.Checked;
+            showHideExplorer2ToolStripMenuItem.Checked = tsbShowHide2.Checked;
+            AjustPanel();
+        }
+
+        private void showHideExplorer1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsbShowHide1.Checked = showHideExplorer1ToolStripMenuItem.Checked;
+            tsbShowHide1_Click(sender, null);
+        }
+
+        private void showHideExplorer2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tsbShowHide2.Checked = showHideExplorer2ToolStripMenuItem.Checked;
+            tsbShowHide2_Click(sender, null);
+        }
+
+
+        private void AddExplorer(TabControl DestinationTabControl, string name)
+        {
+            string newSectionName = applicationSettings.GetNewSectionName();
+
+            if ((name != "") || (newSectionName != ""))
+            {
+                TabPage newTabPage = new TabPage();
+                DestinationTabControl.TabPages.Add(newTabPage);
+
+                UserControlExplorer uce = new UserControlExplorer(newSectionName, applicationSettings, name, DestinationTabControl, newTabPage);
+                uce.Parent = newTabPage;
+                uce.Dock = DockStyle.Fill;
+                uce.MyEvent += new MyDelegate(GetMyEvent);
+                uce.pathChanged += new UserControlExplorer.PathChanged(this.path_Changed);
+            }
+        }
+
+        private void GetMyEvent(object sender, EventArgs e)
+        {
+            current_uce = (sender as UserControlExplorer);
+            MarkTabControl(current_uce.Parent.Parent.Name);
+
+            //Console.WriteLine((sender as UserControlExplorer).Parent.Parent.Name);
+        }
+
+        private void MarkTabControl(string tabControlName)
+        {
+            if (tabControlName == tabControl1.Name)
+            {
+                panel1.BackColor = System.Drawing.Color.DimGray;
+                panel2.BackColor = System.Drawing.Color.Transparent;
+                //panel1.BorderStyle = BorderStyle.FixedSingle;
+                //panel2.BorderStyle = BorderStyle.None;
+            }
+            else
+            {
+                panel1.BackColor = System.Drawing.Color.Transparent;
+                panel2.BackColor = System.Drawing.Color.DimGray;
+                //panel2.BorderStyle = BorderStyle.FixedSingle;
+                //panel1.BorderStyle = BorderStyle.None;
+            }
+        }
 
     }
 }

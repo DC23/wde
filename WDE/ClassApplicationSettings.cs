@@ -159,6 +159,23 @@ namespace jd.Helper.Configuration
             //Load();
         }
 
+        public string GetNewSectionName()
+        {
+            int i = 0;
+
+            do
+            {
+                string tempName = "UserExplorerControl" + i.ToString();
+                if (sections.GetItemByString(tempName,"OPTIONS") == null)
+                    return tempName;
+
+                ++i;
+
+            } while (i < 1000);
+
+            return "";
+        }
+
         public void Save()
         {
             // XmlDocument-Objekt für die Einstellungs-Datei erzeugen
