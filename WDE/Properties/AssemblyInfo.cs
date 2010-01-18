@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Windows Double Explorer")]
-[assembly: AssemblyDescription("2 Windows Explorer in one Application")]
+[assembly: AssemblyDescription("Windows Double Explorer manages two or more Windows Explorer in one application")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("jdSoftwareSolutions")]
 [assembly: AssemblyProduct("WDE")]
 [assembly: AssemblyCopyright("Copyright © by Jörg Dähler - Software Solutions")]
-[assembly: AssemblyTrademark("Jörg Dähler - Software Solutions")]
+[assembly: AssemblyTrademark("Jörg Dähler - Software Solutions www.jdsolutions.de")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.5.0")]
-[assembly: AssemblyFileVersion("0.3.5.0")]
+[assembly: AssemblyVersion("0.3.6.0")]
+[assembly: AssemblyFileVersion("0.3.6.0")]

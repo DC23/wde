@@ -26,9 +26,16 @@ namespace WDE
         private bool ShowDetails = false;
         private bool ShowPreview = false;
         private bool ShowNavigation = true;
-        private bool TabControlLocked = false;
+        public bool TabControlLocked = false;
         private TabControl currentTabControl;
+        private string _lockedPath = "";
+        
+        private ToolStripButton contextTSB = null;
 
+        public string LockedPath
+        {
+            get { return _lockedPath; }
+        }
 
         public UserControlExplorer(string newSectionName, ApplicationSettings applicationSettingsValue, string name, TabControl destTabControl, TabPage tabPage)
         {
@@ -108,7 +115,10 @@ namespace WDE
                 TabControlLocked = Convert.ToBoolean(optionSection.settings.GetItemByString("Locked").Value);
 
             if (TabControlLocked)
+            {
                 tabPage.ImageIndex = 0;
+                _lockedPath = LastPath;
+            }
 
 
             //
@@ -118,65 +128,39 @@ namespace WDE
             {
                 string fav = applicationSettings.sections[sectionID].settings[i].Name;
                 string favValue = applicationSettings.sections[sectionID].settings[i].Value;
-                CreateFavButton(System.IO.Path.GetFileName(fav), favValue, flowLayoutPanel);
+                CreateFavButton(System.IO.Path.GetFileName(fav), favValue);
             }
-
-            //if (config.Sections.ContainsKey("FAVS"))
-            //foreach (Setting s in config.Sections[SectionName].Settings.Values)
-            //{
-            //    string fav = s.Name;
-            //    string favValue = s.Value;
-            //    MessageBox.Show(fav+" "+favValue);
-            //    CreateFavButton(System.IO.Path.GetFileName(fav), fav, flowLayoutPanel);
-            //}
-
-            //for (int i = 0; i < config.Sections[SectionName].Settings.Count; i++)
-            //{
-            //    config.Sections[SectionName].Settings.Values
-                
-            //}
-
-            
-            //if (Properties.Settings.Default.Favs1 != null)
-            //{
-
-            //    foreach (string fav in Properties.Settings.Default.Favs1)
-            //    {
-            //        CreateFavButton(System.IO.Path.GetFileName(fav), fav, flowLayoutPanel1);
-            //    }
-            //}
-
         }
 
         void NavigationLog_NavigationLogChanged(object sender, NavigationLogEventArgs args)
         {
-            // This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
-            //BeginInvoke(new MethodInvoker(delegate()
-            //{
-            //    // calculate button states
-            //    if (args.CanNavigateBackwardChanged)
-            //    {
-            //        this.tsbBack1.Enabled = explorerBrowser1.NavigationLog.CanNavigateBackward;
-            //    }
-            //    if (args.CanNavigateForwardChanged)
-            //    {
-            //        this.tsbForward1.Enabled = explorerBrowser1.NavigationLog.CanNavigateForward;
-            //    }
+            //This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
+            BeginInvoke(new MethodInvoker(delegate()
+            {
+                // calculate button states
+                if (args.CanNavigateBackwardChanged)
+                {
+                    this.tsbBack.Enabled = explorerBrowser.NavigationLog.CanNavigateBackward;
+                }
+                if (args.CanNavigateForwardChanged)
+                {
+                    this.tsbForward.Enabled = explorerBrowser.NavigationLog.CanNavigateForward;
+                }
 
-            //    // update history combo box
-            //    if (args.LocationsChanged)
-            //    {
-            //        this.navigationHistoryCombo.Items.Clear();
-            //        foreach (ShellObject shobj in this.explorerBrowser1.NavigationLog.Locations)
-            //        {
-            //            this.navigationHistoryCombo.Items.Add(shobj.Name);
-            //        }
-            //    }
-            //    if (this.explorerBrowser1.NavigationLog.CurrentLocationIndex == -1)
-            //        this.navigationHistoryCombo.Text = "";
-            //    else
-            //        this.navigationHistoryCombo.SelectedIndex = this.explorerBrowser1.NavigationLog.CurrentLocationIndex;
-            //}));
+                //// update history combo box
+                //if (args.LocationsChanged)
+                //{
+                //    this.navigationHistoryCombo.Items.Clear();
+                //    foreach (ShellObject shobj in this.explorerBrowser.NavigationLog.Locations)
+                //    {
+                //        this.navigationHistoryCombo.Items.Add(shobj.Name);
+                //    }
+                //}
+                //if (this.explorerBrowser.NavigationLog.CurrentLocationIndex == -1)
+                //    this.navigationHistoryCombo.Text = "";
+                //else
+                //    this.navigationHistoryCombo.SelectedIndex = this.explorerBrowser.NavigationLog.CurrentLocationIndex;
+            }));
         }
 
 
@@ -212,7 +196,6 @@ namespace WDE
             catch (Exception)
             {
                 return "";
-
             }
         }
 
@@ -226,9 +209,7 @@ namespace WDE
                 {
                     explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(driveletter));
                 }
-                catch (Exception)
-                {
-                }
+                catch (Exception) { }
             }
         }
 
@@ -239,68 +220,33 @@ namespace WDE
                 if (explorerBrowser.NavigationLog.CurrentLocation.Parent != null)
                     explorerBrowser.Navigate(explorerBrowser.NavigationLog.CurrentLocation.Parent);
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
         }
 
         private void tsbBack_Click(object sender, EventArgs e)
         {
             // Move backwards through navigation log
-            explorerBrowser.NavigateLogLocation(NavigationLogDirection.Backward);
-
+            try
+            {
+                explorerBrowser.NavigateLogLocation(NavigationLogDirection.Backward);
+            }
+            catch (Exception) { }
         }
 
         private void tsbForward_Click(object sender, EventArgs e)
         {
             // Move forwards through navigation log
-            explorerBrowser.NavigateLogLocation(NavigationLogDirection.Forward);
-
-        }
-
-        private void flowLayoutPanel_DragDrop(object sender, DragEventArgs e)
-        {
-            String[] Params = (String[])e.Data.GetData(DataFormats.FileDrop);
-            string myParam = Params[0];
-            string myDir;
-            string myDirCaption;
-
-            if (System.IO.File.Exists(myParam))
-                myDir = System.IO.Path.GetDirectoryName(myParam);
-            else
-                myDir = System.IO.Path.GetFullPath(myParam);
-
-            myDirCaption = System.IO.Path.GetFileName(myDir);
-
-            if (myDirCaption == "")
-                myDirCaption = myDir;
-
-
-            int i = applicationSettings.sections.GetItemIDByString(sectionName, "FAV");
-            if (i >= 0)
-                applicationSettings.sections[i].settings.Add(myDirCaption, myDir);
-            
-
-            //            if (sender.GetType().Name == "ToolStrip")
+            try
             {
-                CreateFavButton(myDirCaption, myDir, flowLayoutPanel);
+                explorerBrowser.NavigateLogLocation(NavigationLogDirection.Forward);
+
             }
-
-
-        }
-
-        private void flowLayoutPanel_DragEnter(object sender, DragEventArgs e)
-        {
-            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            //Console.WriteLine(s[0]);
-
-            e.Effect = DragDropEffects.Link;
+            catch (Exception) { }
         }
 
         private void explorerBrowser_Enter(object sender, EventArgs e)
         {
             this.OnMyEvent();
-         
             //FormMain.setUserControlExplorer(this, currentTabControl);
         }
 
@@ -324,16 +270,25 @@ namespace WDE
 
                 //this.eventHistoryTextBox.Text = this.eventHistoryTextBox.Text + "Navigation completed. New Location = " + location + "\n";
 
-                if (!location.Contains("::"))
+                if (!location.Contains("::") && (!TabControlLocked))
                     optionSection.settings.GetItemByString("LastPath").Value = location;
+
+                //if ((TabControlLocked) && (_lockedPath != location))
+                //    currentTabControl.i
+
 
                 //Properties.Settings.Default.LastPath1 = location;
 
                 tsddbtn.Text = GetRootDriveFromPath(location);
-                
-                tssl.Text = GetFreeDiskSpace(location);
 
-                
+                tssl.Text = GetFreeDiskSpace(location);
+                navigationHistoryCombo.Text = location;
+
+                if (!navigationHistoryCombo.Items.Contains(location))
+                    navigationHistoryCombo.Items.Add(location);
+
+                SizePathTextbox();
+
                 if (pathChanged != null)
                     this.pathChanged(location, this);
             }));
@@ -376,9 +331,7 @@ namespace WDE
                 else
                     explorerBrowser.Navigate(FormMain.current_uce1.explorerBrowser.NavigationLog.CurrentLocation);
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
         }
 
         private void tsbDel_Click(object sender, EventArgs e)
@@ -483,69 +436,65 @@ namespace WDE
             optionSection.settings.GetItemByString("ShowNavigation").Value = ShowNavigation.ToString();
         }
 
-        private void CreateFavButton(string FavText, string FavPath, FlowLayoutPanel flp)
+        private void CreateFavButton(string FavText, string FavPath)
         {
-            //System.Windows.Forms.ToolStripButton mytsm = new System.Windows.Forms.ToolStripButton();
-            System.Windows.Forms.Button mybtn = new System.Windows.Forms.Button();
-            //ts.Items.Add(mytsm);
-
-
-            //this.ts2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            //this.tsbBack2,
-            //this.tsbForward2,
-            //this.toolStripSeparator4,
-            //this.tsbSwitch2,
-            //this.toolStripSeparator6,
-            //this.tsbDel2,
-            //this.toolStripDropDownButton2,
-            //this.toolStripSeparator10});
-            //this.ts2.Location = new System.Drawing.Point(0, 35);
-            //this.ts2.Name = "ts2";
-            //this.ts2.Size = new System.Drawing.Size(784, 25);
-            //this.ts2.TabIndex = 20;
-            //this.ts2.Text = "toolStrip5";
-
-            mybtn.Parent = flp;
             if (FavText == "")
                 FavText = FavPath;
-            mybtn.Text = FavText;
+
+            ToolStripButton mybtn = new ToolStripButton(FavText);
             mybtn.Tag = 1;
-            mybtn.Height = 22;
-            toolTip.SetToolTip(mybtn, FavPath);
-            mybtn.FlatStyle = FlatStyle.Flat;
-            //mybtn.ToolTipText = FavPath;
-            mybtn.Click += new System.EventHandler(mybtn_Click);
-            mybtn.ContextMenuStrip = contextMenuStrip;
-            mybtn.AutoSize = true;
-            mybtn.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            mybtn.Image = global::WDE.Properties.Resources.folder_star;
+            mybtn.ToolTipText = FavPath;
+            mybtn.MouseDown += new MouseEventHandler(toolStripButton1_MouseDown);
 
+            mybtn.Click += new System.EventHandler(mysbtn_Click);
+            ts.Items.Add(mybtn);
 
-            //mytsm.Text = FavText;
-            //mytsm.Tag = 1;
-            //mytsm.ToolTipText = FavPath;
-            //mytsm.Click += new System.EventHandler(mytsm_Click);
+        }
+
+        private void mysbtn_Click(object sender, EventArgs e)
+        {
+            string pfad = (sender as ToolStripButton).ToolTipText;
+            if (pfad != "")
+            {
+                if (Directory.Exists(pfad))
+                {
+                    try
+                    {
+                        explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+                    }
+                    catch (Exception) { }
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void toolStripButton1_MouseDown(object sender, MouseEventArgs e)
+        {
+            contextTSB = (sender as ToolStripButton);
         }
 
         private void mybtn_Click(object sender, EventArgs e)
         {
-            //Microsoft.WindowsAPICodePack.Controls.WindowsForms.ExplorerBrowser explorerBrowser0;
-
-            //if ((sender as Button).Parent == flowLayoutPanel)
-            //    explorerBrowser0 = explorerBrowser1;
-            //else
-            //    explorerBrowser0 = explorerBrowser2;
-
-            //MessageBox.Show((sender as ToolStripButton).ToolTipText);
-
             string pfad = toolTip.GetToolTip(sender as Button);
             if (pfad != "")
             {
-                try
+                if (Directory.Exists(pfad))
                 {
-                    //explorerBrowser1.Navigate(ShellFileSystemFolder.FromFolderPath(Properties.Settings.Default.LastPath1));
-                    explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
-                }
+                    try
+                    {
+                        explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+                    }
                 catch (Exception) { }
+                }
+                else
+	            {
+                    MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            	}
+
             }
         }
 
@@ -576,17 +525,13 @@ namespace WDE
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show(sender.GetType().Name);
-            //MessageBox.Show(toolTip1.GetToolTip(sender as Button));
-            // Console.WriteLine(((sender as Button).GetCurrentParent() as ContextMenuStrip).Name.ToString());
-            //Console.WriteLine(((sender as ToolStripMenuItem).GetCurrentParent() as ContextMenuStrip).Name.ToString());
+            if (contextTSB == null)
+                return;
 
+            string mypath = contextTSB.ToolTipText;
+            //Properties.Settings.Default.Favs.Remove(mypath);
 
-            //(contextMenuStrip1.SourceControl as Button).Text = "Fav" + (contextMenuStrip1.SourceControl as Button).Tag.ToString();
-            //toolTip1.SetToolTip((contextMenuStrip1.SourceControl as Button), "");
-
-            string mycaption = (contextMenuStrip.SourceControl as Button).Text;
-            string mypath = toolTip.GetToolTip(contextMenuStrip.SourceControl as Button);
+            string mycaption = contextTSB.Text;
 
 
             int i = applicationSettings.sections.GetItemIDByString(sectionName, "FAV");
@@ -600,9 +545,10 @@ namespace WDE
             }
 
 
-            (contextMenuStrip.SourceControl as Button).Dispose();
-            //MessageBox.Show((contextMenuStrip1.SourceControl as Button).Text);
+            contextTSB.Dispose();
         }
+
+
         private string GetBestDiskSpaceSize(long disksize)
         {
             string ResultString;
@@ -641,18 +587,11 @@ namespace WDE
                     newBtn.Click += new System.EventHandler(this.newBtn_Click);
 
                     btn.DropDownItems.Add(newBtn);
-                    //    Console.WriteLine("Label: {0}", driveInfo.VolumeLabel);
-                    //    Console.WriteLine("Dateisystem: {0}", driveInfo.DriveFormat);
-                    //    Console.WriteLine("Gesamtgröße: {0} Byte", driveInfo.TotalSize);
-                    //    Console.WriteLine("Freier Speicher: {0} Byte", driveInfo.TotalFreeSpace);
-                    //    Console.WriteLine("Für den akt. Benutzer verfügbarer freier " +
-                    //       "Speicher: {0} Byte", driveInfo.AvailableFreeSpace);
                 }
                 else
                 {
-                    //    Console.WriteLine("Nicht verfügbar");
+                    //MessageBox.Show(string.Format("Drive [{0}] not ready!", driveInfo.Name));
                 }
-                //Console.WriteLine("Wurzelverzeichnis: {0}", driveInfo.RootDirectory.FullName);
             }
 
         }
@@ -712,6 +651,126 @@ namespace WDE
             if (this.MyEvent != null)
                 this.MyEvent(this, null);
         }
+
+        private void toolStrip2_SizeChanged(object sender, EventArgs e)
+        {
+            SizePathTextbox();
+            //toolStripComboBoxPath.Width = toolStrip2.Width - tsddbtn.Width - tssl.Width;
+        }
+
+        private void SizePathTextbox()
+        {
+            navigationHistoryCombo.Width = toolStrip2.Width - tsddbtn.Width - tssl.Width - 10;
+        }
+
+        private void toolStripComboBoxPath_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangePath(navigationHistoryCombo.Text);
+        }
+
+        private bool ChangePath(string newPath)
+        {
+            if (Directory.Exists(newPath))
+            {
+                try
+                {
+                    explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(newPath));
+                }
+                catch (Exception) { }
+                return true;
+            }
+            else
+                return false;
+
+        }
+
+        private void toolStripComboBoxPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            string oldPath = explorerBrowser.NavigationLog.CurrentLocation.ParsingName.ToString();
+            string oldText = navigationHistoryCombo.Text;
+
+            if (e.KeyCode == Keys.Return)
+            {
+                ChangePath(navigationHistoryCombo.Text);
+
+                if (navigationHistoryCombo.Text == oldText)
+                    navigationHistoryCombo.Text = oldPath;
+
+            }
+
+        }
+
+        private void navigationHistoryCombo_Enter(object sender, EventArgs e)
+        {
+            navigationHistoryCombo.BackColor = SystemColors.Window;
+        }
+
+        private void navigationHistoryCombo_Leave(object sender, EventArgs e)
+        {
+            navigationHistoryCombo.BackColor = SystemColors.Control;
+        }
+
+        private void tsddbtn_DropDownOpening(object sender, EventArgs e)
+        {
+            RefreshApp();
+        }
+
+        private void ts_DragEnter(object sender, DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            e.Effect = DragDropEffects.Link;
+        }
+
+        private void ts_DragDrop(object sender, DragEventArgs e)
+        {
+            String[] Params = (String[])e.Data.GetData(DataFormats.FileDrop);
+            string myParam = Params[0];
+            string myDir;
+            string myDirCaption;
+
+            if (System.IO.File.Exists(myParam))
+                myDir = System.IO.Path.GetDirectoryName(myParam);
+            else
+                myDir = System.IO.Path.GetFullPath(myParam);
+
+            myDirCaption = System.IO.Path.GetFileName(myDir);
+
+            if (myDirCaption == "")
+                myDirCaption = myDir;
+
+
+            int i = applicationSettings.sections.GetItemIDByString(sectionName, "FAV");
+            if (i >= 0)
+                applicationSettings.sections[i].settings.Add(myDirCaption, myDir);
+
+
+                CreateFavButton(myDirCaption, myDir);
+        }
+
+        private void ts_MouseDown(object sender, MouseEventArgs e)
+        {
+            contextTSB = null;
+        }
+
+        private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            clearToolStripMenuItem.Enabled = false;
+
+            if (contextTSB == null)
+                return;
+
+            clearToolStripMenuItem.Enabled = (contextTSB.Tag.ToString() == "1");
+
+        }
+
+
+        private void tsb_MouseDown(object sender, MouseEventArgs e)
+        {
+            contextTSB = null;
+        }
+
+
     }
 
  

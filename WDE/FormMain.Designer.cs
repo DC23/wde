@@ -51,7 +51,7 @@
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.toolStripFav = new System.Windows.Forms.ToolStrip();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,10 +74,17 @@
             this.showHideExplorer2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mapNetworkDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disconnectDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jumpToToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wdecodeplexcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbSwitch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
@@ -101,7 +108,7 @@
             // 
             this.splitter.BackColor = System.Drawing.SystemColors.Control;
             this.splitter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitter.Location = new System.Drawing.Point(0, 351);
+            this.splitter.Location = new System.Drawing.Point(0, 343);
             this.splitter.Name = "splitter";
             this.splitter.Size = new System.Drawing.Size(784, 3);
             this.splitter.TabIndex = 2;
@@ -112,7 +119,7 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.Controls.Add(this.tabControl1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 82);
+            this.panel1.Location = new System.Drawing.Point(0, 74);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(784, 269);
             this.panel1.TabIndex = 0;
@@ -130,6 +137,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(784, 269);
             this.tabControl1.TabIndex = 26;
+            this.tabControl1.DoubleClick += new System.EventHandler(this.tabControl1_DoubleClick);
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -140,28 +148,31 @@
             this.closeTabToolStripMenuItem,
             this.tsmiLockTab});
             this.cmsTabControl.Name = "cmsTabControl";
-            this.cmsTabControl.Size = new System.Drawing.Size(127, 70);
+            this.cmsTabControl.Size = new System.Drawing.Size(153, 92);
             this.cmsTabControl.Opening += new System.ComponentModel.CancelEventHandler(this.cmsTabControl_Opening);
             // 
             // tsmiNewTab
             // 
+            this.tsmiNewTab.Image = global::WDE.Properties.Resources.add;
             this.tsmiNewTab.Name = "tsmiNewTab";
-            this.tsmiNewTab.Size = new System.Drawing.Size(126, 22);
+            this.tsmiNewTab.Size = new System.Drawing.Size(140, 22);
             this.tsmiNewTab.Text = "New Tab";
             this.tsmiNewTab.Click += new System.EventHandler(this.tsmiNewTab_Click);
             // 
             // closeTabToolStripMenuItem
             // 
+            this.closeTabToolStripMenuItem.Image = global::WDE.Properties.Resources.remove;
             this.closeTabToolStripMenuItem.Name = "closeTabToolStripMenuItem";
-            this.closeTabToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.closeTabToolStripMenuItem.Text = "Close Tab";
+            this.closeTabToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.closeTabToolStripMenuItem.Text = "Remove Tab";
             this.closeTabToolStripMenuItem.Click += new System.EventHandler(this.closeTabToolStripMenuItem_Click);
             // 
             // tsmiLockTab
             // 
             this.tsmiLockTab.CheckOnClick = true;
+            this.tsmiLockTab.Image = global::WDE.Properties.Resources.StartSmal;
             this.tsmiLockTab.Name = "tsmiLockTab";
-            this.tsmiLockTab.Size = new System.Drawing.Size(126, 22);
+            this.tsmiLockTab.Size = new System.Drawing.Size(152, 22);
             this.tsmiLockTab.Text = "Lock Tab";
             this.tsmiLockTab.Click += new System.EventHandler(this.tsmiLockTab_Click);
             // 
@@ -170,7 +181,8 @@
             this.imageListTabControl.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTabControl.ImageStream")));
             this.imageListTabControl.TransparentColor = System.Drawing.Color.Transparent;
             this.imageListTabControl.Images.SetKeyName(0, "StartSmal.png");
-            this.imageListTabControl.Images.SetKeyName(1, "StarBig.png");
+            this.imageListTabControl.Images.SetKeyName(1, "new_tab.png");
+            this.imageListTabControl.Images.SetKeyName(2, "StarBig.png");
             // 
             // tscbKnownFolder
             // 
@@ -180,6 +192,7 @@
             this.tscbKnownFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.tscbKnownFolder.Name = "tscbKnownFolder";
             this.tscbKnownFolder.Size = new System.Drawing.Size(250, 23);
+            this.tscbKnownFolder.Visible = false;
             this.tscbKnownFolder.SelectedIndexChanged += new System.EventHandler(this.knownFolderCombo_SelectedIndexChanged);
             // 
             // toolStripLabel1
@@ -188,6 +201,7 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(50, 22);
             this.toolStripLabel1.Text = "Jump to";
             this.toolStripLabel1.ToolTipText = "Jump to known folder";
+            this.toolStripLabel1.Visible = false;
             // 
             // toolStripSeparator3
             // 
@@ -210,9 +224,11 @@
             this.clearToolStripMenuItem});
             this.contextMenuStripRemoveFav.Name = "contextMenuStrip1";
             this.contextMenuStripRemoveFav.Size = new System.Drawing.Size(118, 26);
+            this.contextMenuStripRemoveFav.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripRemoveFav_Opening);
             // 
             // clearToolStripMenuItem
             // 
+            this.clearToolStripMenuItem.Image = global::WDE.Properties.Resources.remove;
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
             this.clearToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.clearToolStripMenuItem.Text = "Remove";
@@ -233,9 +249,9 @@
             this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.tabControl2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 354);
+            this.panel2.Location = new System.Drawing.Point(0, 346);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(784, 337);
+            this.panel2.Size = new System.Drawing.Size(784, 345);
             this.panel2.TabIndex = 18;
             // 
             // tabControl2
@@ -248,8 +264,9 @@
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.Padding = new System.Drawing.Point(3, 3);
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(784, 337);
+            this.tabControl2.Size = new System.Drawing.Size(784, 345);
             this.tabControl2.TabIndex = 25;
+            this.tabControl2.DoubleClick += new System.EventHandler(this.tabControl2_DoubleClick);
             this.tabControl2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
             this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
             // 
@@ -263,18 +280,25 @@
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
-            // flowLayoutPanel
+            // toolStripFav
             // 
-            this.flowLayoutPanel.AllowDrop = true;
-            this.flowLayoutPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel.Location = new System.Drawing.Point(0, 49);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(784, 33);
-            this.flowLayoutPanel.TabIndex = 24;
-            this.toolTip.SetToolTip(this.flowLayoutPanel, "Drag your favorites folders here");
-            this.flowLayoutPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragDrop);
-            this.flowLayoutPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel_DragEnter);
+            this.toolStripFav.AllowDrop = true;
+            this.toolStripFav.AutoSize = false;
+            this.toolStripFav.BackColor = System.Drawing.SystemColors.Control;
+            this.toolStripFav.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStripFav.ContextMenuStrip = this.contextMenuStripRemoveFav;
+            this.toolStripFav.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripFav.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.toolStripFav.Location = new System.Drawing.Point(0, 49);
+            this.toolStripFav.Name = "toolStripFav";
+            this.toolStripFav.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStripFav.Size = new System.Drawing.Size(784, 25);
+            this.toolStripFav.TabIndex = 0;
+            this.toolStripFav.Text = "toolStrip1";
+            this.toolTip.SetToolTip(this.toolStripFav, "Dragdrop your favorite folder to here");
+            this.toolStripFav.MouseDown += new System.Windows.Forms.MouseEventHandler(this.toolStripFav_MouseDown);
+            this.toolStripFav.DragEnter += new System.Windows.Forms.DragEventHandler(this.toolStripFav_DragEnter);
+            this.toolStripFav.DragDrop += new System.Windows.Forms.DragEventHandler(this.toolStripFav_DragDrop);
             // 
             // menuStripMain
             // 
@@ -283,6 +307,7 @@
             this.menuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.tsmiViewToolbar,
+            this.extrasToolStripMenuItem,
             this.jumpToToolStripMenuItem,
             this.favoritesToolStripMenuItem,
             this.helpToolStripMenuItem});
@@ -487,9 +512,34 @@
             this.openExplorerToolStripMenuItem.Text = "Open Explorer";
             this.openExplorerToolStripMenuItem.Click += new System.EventHandler(this.tsbExplorer_Click);
             // 
+            // extrasToolStripMenuItem
+            // 
+            this.extrasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mapNetworkDriveToolStripMenuItem,
+            this.disconnectDriveToolStripMenuItem});
+            this.extrasToolStripMenuItem.Name = "extrasToolStripMenuItem";
+            this.extrasToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.extrasToolStripMenuItem.Text = "Extras";
+            // 
+            // mapNetworkDriveToolStripMenuItem
+            // 
+            this.mapNetworkDriveToolStripMenuItem.Name = "mapNetworkDriveToolStripMenuItem";
+            this.mapNetworkDriveToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.mapNetworkDriveToolStripMenuItem.Text = "Map network drive";
+            this.mapNetworkDriveToolStripMenuItem.Visible = false;
+            this.mapNetworkDriveToolStripMenuItem.Click += new System.EventHandler(this.mapNetworkDriveToolStripMenuItem_Click);
+            // 
+            // disconnectDriveToolStripMenuItem
+            // 
+            this.disconnectDriveToolStripMenuItem.Name = "disconnectDriveToolStripMenuItem";
+            this.disconnectDriveToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.disconnectDriveToolStripMenuItem.Text = "Disconnect network drive";
+            this.disconnectDriveToolStripMenuItem.Click += new System.EventHandler(this.disconnectDriveToolStripMenuItem_Click);
+            // 
             // jumpToToolStripMenuItem
             // 
             this.jumpToToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.jumpToToolStripMenuItem.Image = global::WDE.Properties.Resources.folder;
             this.jumpToToolStripMenuItem.Name = "jumpToToolStripMenuItem";
             this.jumpToToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
             this.jumpToToolStripMenuItem.Text = "Known Folders";
@@ -504,7 +554,11 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.infoToolStripMenuItem});
+            this.infoToolStripMenuItem,
+            this.checkForUpdateToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem,
+            this.wdecodeplexcomToolStripMenuItem});
             this.helpToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -516,9 +570,38 @@
             this.infoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.infoToolStripMenuItem.Text = "Infos";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
+            // 
+            // checkForUpdateToolStripMenuItem
+            // 
+            this.checkForUpdateToolStripMenuItem.Image = global::WDE.Properties.Resources.update;
+            this.checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
+            this.checkForUpdateToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.checkForUpdateToolStripMenuItem.Text = "Check for Update";
+            this.checkForUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdateToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(222, 6);
+            // 
+            // wwwjdSoftwareSolutionsdeToolStripMenuItem
+            // 
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Name = "wwwjdSoftwareSolutionsdeToolStripMenuItem";
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Text = "www.jdSoftwareSolutions.de";
+            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Click += new System.EventHandler(this.wwwjdSoftwareSolutionsdeToolStripMenuItem_Click);
+            // 
+            // wdecodeplexcomToolStripMenuItem
+            // 
+            this.wdecodeplexcomToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
+            this.wdecodeplexcomToolStripMenuItem.Name = "wdecodeplexcomToolStripMenuItem";
+            this.wdecodeplexcomToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.wdecodeplexcomToolStripMenuItem.Text = "wde.codeplex.com";
+            this.wdecodeplexcomToolStripMenuItem.Click += new System.EventHandler(this.wdecodeplexcomToolStripMenuItem_Click);
             // 
             // tsMain
             // 
@@ -538,6 +621,7 @@
             this.tscbKnownFolder});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
+            this.tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.tsMain.Size = new System.Drawing.Size(784, 25);
             this.tsMain.TabIndex = 20;
             this.tsMain.Text = "toolStrip1";
@@ -640,7 +724,7 @@
             this.Controls.Add(this.splitter);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.navigationHistoryCombo);
-            this.Controls.Add(this.flowLayoutPanel);
+            this.Controls.Add(this.toolStripFav);
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.menuStripMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -702,7 +786,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiNewTab;
         private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiLockTab;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.ToolStripMenuItem jumpToToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem favoritesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiViewToolbar;
@@ -725,6 +808,14 @@
         private System.Windows.Forms.ToolStripMenuItem openExplorerToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         public System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem wwwjdSoftwareSolutionsdeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wdecodeplexcomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip toolStripFav;
+        private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mapNetworkDriveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disconnectDriveToolStripMenuItem;
 
     }
 }

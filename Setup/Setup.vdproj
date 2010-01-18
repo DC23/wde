@@ -190,7 +190,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WDE, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:WDE, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_49DE5718F7B74585B69742BF98F3C603"
@@ -316,7 +316,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_3B47548F8CA846B2B6600B70094A4E2D"
                     {
-                    "Name" = "8:jdUtilities"
+                    "Name" = "8:[Manufacturer]"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -374,7 +374,7 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Jörg Dähler - Software Solutions"
+        "Manufacturer" = "8:jdSoftwareSolutions"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.jdSoftwareSolutions.de"
         "Title" = "8:Windows Double Explorer Setup"
