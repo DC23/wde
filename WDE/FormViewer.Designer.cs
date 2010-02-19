@@ -46,7 +46,6 @@
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox1.Size = new System.Drawing.Size(624, 417);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "ABCabc";
             this.textBox1.WordWrap = false;
             // 
             // toolStrip1

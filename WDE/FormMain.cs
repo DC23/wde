@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Controls;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using System.Diagnostics;
 using System.IO;
 using jd.Helper.Configuration;
@@ -39,11 +40,19 @@ namespace WDE
         private string[] _args;
         private ToolStripButton contextTSB = null;
 
+        FormSplash formSplash = new FormSplash();
+
+        private JumpList jumpList;
+        private TaskbarManager windowsTaskbar = TaskbarManager.Instance;
+
         ApplicationSettings applicationSettings = new ApplicationSettings(Path.Combine(Application.LocalUserAppDataPath, "wdeConfig.xml"));
 
         public FormMain(string[] args)
         {
             InitializeComponent();
+
+            formSplash.Show();
+            Application.DoEvents();
 
             _args = args;
 
@@ -168,6 +177,7 @@ namespace WDE
             //
             TabPage tpnew1 = new TabPage();
             tpnew1.ImageIndex = 1;
+            tpnew1.ToolTipText = "HALLO";
             tabControl1.TabPages.Add(tpnew1);
 
             //
@@ -203,6 +213,7 @@ namespace WDE
                 }
                 catch (Exception) { throw; }
             }
+
 
         }
 
@@ -390,7 +401,7 @@ namespace WDE
         }
 
 
-        private void path_Changed(string pathname, UserControlExplorer uce)
+        private void path_Changed(string pathname, string name, UserControlExplorer uce)
         {
             uce.Parent.Text = pathname;
             if ((uce.TabControlLocked == true) && (uce.LockedPath == pathname))
@@ -438,6 +449,7 @@ namespace WDE
                 return;
 
             tsmiLockTab.Checked = (tc.SelectedTab.ImageIndex == 0) || (tc.SelectedTab.ImageIndex == 2);
+            tsmiResetTabPath.Enabled = (tsmiLockTab.Checked == true);
 
 
             closeTabToolStripMenuItem.Enabled = ((tc.TabCount > 1) && (!tsmiLockTab.Checked));
@@ -459,27 +471,6 @@ namespace WDE
             current_uce.TabControlLocked = tsmiLockTab.Checked;
         }
 
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedTab.ImageIndex == 1)
-            {
-                AddExplorer(tabControl1, "",true);
-                tabControl1.SelectedIndex = tabControl1.TabCount - 2;
-            }
-            else
-            {
-                try
-                {
-                    string sectionName = tabControl1.SelectedTab.Tag.ToString();
-                    //MessageBox.Show((tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer).Name);
-                    current_uce1 = (tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
-                    current_uce = current_uce1;
-                    MarkTabControl(tabControl1.Name);
-                }
-                catch (Exception) { }
-            }
-        }
 
         private void jumpTo_Click(object sender, EventArgs e)
         {
@@ -592,57 +583,78 @@ namespace WDE
 
         private void mysbtn_Click(object sender, EventArgs e)
         {
-            string pfad = (sender as ToolStripButton).ToolTipText;
-            if (pfad != "")
-            {
-                if (Directory.Exists(pfad))
-                {
-                    try
-                    {
-                        current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
-                    }
-                    catch (Exception) { }
-                }
-                else
-                {
-                    MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            NavigateTo((sender as ToolStripButton).ToolTipText);
+            //string pfad = (sender as ToolStripButton).ToolTipText;
+            //if (pfad != "")
+            //{
+            //    if (Directory.Exists(pfad))
+            //    {
+            //        try
+            //        {
+            //            current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+            //        }
+            //        catch (Exception) { }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
         }
 
 
         private void myFav_Click(object sender, EventArgs e)
         {
-            string pfad = (sender as ToolStripMenuItem).Text;
-            if (pfad != "")
+            NavigateTo((sender as ToolStripMenuItem).Text);
+            //string pfad = (sender as ToolStripMenuItem).Text;
+            //if (pfad != "")
+            //{
+            //    try
+            //    {
+            //        current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+            //    }
+            //    catch (Exception) { }
+            //}
+        }
+
+        private bool NavigateTo(string path)
+        {
+            if (Directory.Exists(path))
             {
                 try
                 {
-                    current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+                    current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(path));
                 }
                 catch (Exception) { }
             }
-        }
+            else
+            {
+                MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", path), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
+            return true;
+        }
 
         private void mybtn_Click(object sender, EventArgs e)
         {
-            string pfad = toolTip.GetToolTip(sender as Button);
-            if (pfad != "")
-            {
-                if (Directory.Exists(pfad))
-                {
-                    try
-                    {
-                        current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
-                    }
-                    catch (Exception) { }
-                }
-                else
-	            {
-                    MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            	}
-            }
+            NavigateTo(toolTip.GetToolTip(sender as Button));
+            //string pfad = toolTip.GetToolTip(sender as Button);
+            //if (pfad != "")
+            //{
+            //    if (Directory.Exists(pfad))
+            //    {
+            //        try
+            //        {
+            //            current_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(pfad));
+            //        }
+            //        catch (Exception) { }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show(string.Format("Path [{0}] not exist! Maybe an old temporary drive like an usb stick or network drive.", pfad), "Path Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
         }
 
         private void RemoveFavItem(string name)
@@ -713,34 +725,7 @@ namespace WDE
             }
         }
 
-        private void tabControl2_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                //Console.WriteLine("right click");
-                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, e.X, e.Y, 0, 0);
-            }
-        }
 
-        private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl2.SelectedTab.ImageIndex == 1)
-            {
-                AddExplorer(tabControl2, "", true);
-                tabControl2.SelectedIndex = tabControl2.TabCount - 2;
-            }
-            else
-            {
-                try
-                {
-                    string sectionName = tabControl2.SelectedTab.Tag.ToString();
-                    current_uce2 = (tabControl2.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
-                    current_uce = current_uce2;
-                    MarkTabControl(tabControl2.Name);
-                }
-                catch (Exception) { }
-            }
-        }
 
         private void tsbShowHide1_Click(object sender, EventArgs e)
         {
@@ -953,8 +938,101 @@ namespace WDE
                 cur_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromFolderPath(curLocation));
             }
             catch (Exception) { }
-
         }
+
+        private void tabControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, e.X, e.Y, 0, 0);
+            }
+            SetCurrentUCE(tabControl1);
+        }
+
+        private void tabControl2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, e.X, e.Y, 0, 0);
+            }
+            SetCurrentUCE(tabControl2);
+        }
+
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetCurrentUCE(tabControl1);
+            //if (tabControl1.SelectedTab.ImageIndex == 1)
+            //{
+            //    AddExplorer(tabControl1, "",true);
+            //    tabControl1.SelectedIndex = tabControl1.TabCount - 2;
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        string sectionName = tabControl1.SelectedTab.Tag.ToString();
+            //        //MessageBox.Show((tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer).Name);
+            //        current_uce1 = (tabControl1.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
+            //        current_uce = current_uce1;
+            //        MarkTabControl(tabControl1.Name);
+            //    }
+            //    catch (Exception) { }
+            //}
+        }
+
+        private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetCurrentUCE(tabControl2);
+
+            //if (tabControl2.SelectedTab.ImageIndex == 1)
+            //{
+            //    AddExplorer(tabControl2, "", true);
+            //    tabControl2.SelectedIndex = tabControl2.TabCount - 2;
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        string sectionName = tabControl2.SelectedTab.Tag.ToString();
+            //        current_uce2 = (tabControl2.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
+            //        current_uce = current_uce2;
+            //        MarkTabControl(tabControl2.Name);
+            //    }
+            //    catch (Exception) { }
+            //}
+        }
+
+        private void SetCurrentUCE(TabControl tabControlx)
+        {
+            if (tabControlx.SelectedTab.ImageIndex == 1)
+            {
+                AddExplorer(tabControlx, "", true);
+                tabControlx.SelectedIndex = tabControlx.TabCount - 2;
+            }
+            else
+            {
+                try
+                {
+                    string sectionName = tabControlx.SelectedTab.Tag.ToString();
+                    if (tabControlx == tabControl1)
+                    {
+                        current_uce1 = (tabControlx.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
+                        current_uce = current_uce1;
+                    }
+                    else if (tabControlx == tabControl2)
+                    {
+                        current_uce2 = (tabControlx.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
+                        current_uce = current_uce2;
+                    }
+
+                    
+                    MarkTabControl(tabControlx.Name);
+                }
+                catch (Exception) { }
+            }
+        }
+
 
         private void toolStripFav_DragDrop(object sender, DragEventArgs e)
         {
@@ -986,26 +1064,14 @@ namespace WDE
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //string mycaption = (contextMenuStripRemoveFav.SourceControl as Button).Text;
-            //string mypath = toolTip.GetToolTip(contextMenuStripRemoveFav.SourceControl as Button);
-            //string mycaption = (contextMenuStripRemoveFav.SourceControl as ToolStripButton).Text;
-
             if (contextTSB == null)
                 return;
 
             string mypath = contextTSB.ToolTipText;
 
-
-            //MessageBox.Show(tsb.Text);
-
             RemoveFavItem(mypath);
             Properties.Settings.Default.Favs.Remove(mypath);
             contextTSB.Dispose();
-        }
-
-        private void contextMenuStripRemoveFav_Opening(object sender, CancelEventArgs e)
-        {
-
         }
 
         private void toolStripFav_MouseDown(object sender, MouseEventArgs e)
@@ -1013,14 +1079,9 @@ namespace WDE
             contextTSB = null;
         }
 
-        private void toolStripButton1_Click_2(object sender, EventArgs e)
-        {
-        }
-
         private void toolStripButton1_MouseDown(object sender, MouseEventArgs e)
         {
             contextTSB = (sender as ToolStripButton);
-            //Console.WriteLine(contextTSB.ToolTipText);
         }
 
         private void mapNetworkDriveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1033,6 +1094,108 @@ namespace WDE
             fdd.Show();
             Update();
         }
+
+        private void toolStripButton1_Click_3(object sender, EventArgs e)
+        {
+            Process P = new Process();
+            P.StartInfo.FileName= System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase;
+            P.Start();
+        }
+
+        private void tsmiResetTabPath_Click(object sender, EventArgs e)
+        {
+            current_uce.ResetToLockedPath();
+        }
+
+        private void tsmiMainResetTabPath_Click(object sender, EventArgs e)
+        {
+            ResetAllTabPages(tabControl1);
+            ResetAllTabPages(tabControl2);
+            //foreach (TabPage item in tabControl1.TabPages)
+            //{
+            //    if (item.Text != string.Empty)
+            //    {
+            //        UserControlExplorer my_uce = item.Controls["UserControlExplorer"] as UserControlExplorer;
+            //        my_uce.ResetToLockedPath();
+            //    }
+            //}
+
+        }
+
+        private void ResetAllTabPages(TabControl tc)
+        {
+            foreach (TabPage item in tc.TabPages)
+            {
+                if (item.Text != string.Empty)
+                {
+                    UserControlExplorer my_uce = item.Controls["UserControlExplorer"] as UserControlExplorer;
+                    my_uce.ResetToLockedPath();
+                }
+            }
+        }
+
+        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+            psi.FileName = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7438177";
+
+            System.Diagnostics.Process.Start(psi);            
+        }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            string systemFolder = @"C:\Windows";
+
+            jumpList = JumpList.CreateJumpList();
+            jumpList.AddUserTasks(new JumpListLink(Path.Combine(systemFolder, "explorer.exe"), "Open Explorer")
+            {
+                IconReference = new IconReference(Path.Combine(systemFolder, "explorer.exe"), 0)
+            });
+
+            jumpList.Refresh();
+            formSplash.Close();
+
+        }
+
+        private void tabControl1_DragDrop(object sender, DragEventArgs e)
+        {
+            tabControlDragDrop(tabControl1, e);
+        }
+
+        private void tabControl1_DragEnter(object sender, DragEventArgs e)
+        {
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            e.Effect = DragDropEffects.Link;
+        }
+
+        private void tabControl2_DragDrop(object sender, DragEventArgs e)
+        {
+            tabControlDragDrop(tabControl2, e);
+        }
+
+        private void tabControlDragDrop(TabControl tc, DragEventArgs e)
+        {
+            String[] Params = (String[])e.Data.GetData(DataFormats.FileDrop);
+            string myParam = Params[0];
+            string myDir;
+
+            if (System.IO.File.Exists(myParam))
+                myDir = System.IO.Path.GetDirectoryName(myParam);
+            else
+                myDir = System.IO.Path.GetFullPath(myParam);
+
+            try
+            {
+                AddExplorer(tc, "", true);
+                tc.SelectedIndex = tc.TabCount - 2;
+
+                UserControlExplorer cur_uce = tc.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer;
+                cur_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromFolderPath(myDir));
+            }
+            catch (Exception) { }
+        }
+
 
     }
 }

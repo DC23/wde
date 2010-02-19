@@ -164,7 +164,7 @@ namespace WDE
         }
 
 
-        public delegate void PathChanged(string pathname, UserControlExplorer uce);
+        public delegate void PathChanged(string pathname, string name, UserControlExplorer uce);
         public event PathChanged pathChanged;
 
         private void UserControlExplorer_Load(object sender, EventArgs e)
@@ -262,22 +262,13 @@ namespace WDE
 
         private void explorerBrowser_NavigationComplete(object sender, NavigationCompleteEventArgs e)
         {
-            // This event is BeginInvoked to decouple the ExplorerBrowser UI from this UI
             BeginInvoke(new MethodInvoker(delegate()
             {
-                // update event history text box
                 string location = (e.NewLocation == null) ? "(unknown)" : e.NewLocation.ParsingName;
-
-                //this.eventHistoryTextBox.Text = this.eventHistoryTextBox.Text + "Navigation completed. New Location = " + location + "\n";
+                string locationName = (e.NewLocation == null) ? "(unknown)" : e.NewLocation.Name;
 
                 if (!location.Contains("::") && (!TabControlLocked))
                     optionSection.settings.GetItemByString("LastPath").Value = location;
-
-                //if ((TabControlLocked) && (_lockedPath != location))
-                //    currentTabControl.i
-
-
-                //Properties.Settings.Default.LastPath1 = location;
 
                 tsddbtn.Text = GetRootDriveFromPath(location);
 
@@ -290,7 +281,7 @@ namespace WDE
                 SizePathTextbox();
 
                 if (pathChanged != null)
-                    this.pathChanged(location, this);
+                    this.pathChanged(location, locationName, this);
             }));
 
             this.OnMyEvent();
@@ -770,6 +761,23 @@ namespace WDE
             contextTSB = null;
         }
 
+        public bool ResetToLockedPath()
+        {
+            if (Directory.Exists(_lockedPath))
+            {
+                try
+                {
+                    explorerBrowser.Navigate(ShellFileSystemFolder.FromParsingName(_lockedPath));
+                }
+                catch (Exception) { }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
 
     }
 
