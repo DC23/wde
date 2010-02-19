@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Controls;
-using Microsoft.WindowsAPICodePack.Taskbar;
+//using Microsoft.WindowsAPICodePack.Taskbar;
 using System.Diagnostics;
 using System.IO;
 using jd.Helper.Configuration;
@@ -42,8 +42,8 @@ namespace WDE
 
         FormSplash formSplash = new FormSplash();
 
-        private JumpList jumpList;
-        private TaskbarManager windowsTaskbar = TaskbarManager.Instance;
+        //private JumpList jumpList;
+        //private TaskbarManager windowsTaskbar = TaskbarManager.Instance;
 
         ApplicationSettings applicationSettings = new ApplicationSettings(Path.Combine(Application.LocalUserAppDataPath, "wdeConfig.xml"));
 
@@ -1144,15 +1144,15 @@ namespace WDE
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            string systemFolder = @"C:\Windows";
+            //string systemFolder = @"C:\Windows";
 
-            jumpList = JumpList.CreateJumpList();
-            jumpList.AddUserTasks(new JumpListLink(Path.Combine(systemFolder, "explorer.exe"), "Open Explorer")
-            {
-                IconReference = new IconReference(Path.Combine(systemFolder, "explorer.exe"), 0)
-            });
+            //jumpList = JumpList.CreateJumpList();
+            //jumpList.AddUserTasks(new JumpListLink(Path.Combine(systemFolder, "explorer.exe"), "Open Explorer")
+            //{
+            //    IconReference = new IconReference(Path.Combine(systemFolder, "explorer.exe"), 0)
+            //});
 
-            jumpList.Refresh();
+            //jumpList.Refresh();
             formSplash.Close();
 
         }
