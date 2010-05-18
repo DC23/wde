@@ -79,11 +79,11 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(613, 18);
+            this.label2.Location = new System.Drawing.Point(781, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(287, 26);
+            this.label2.Size = new System.Drawing.Size(119, 26);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Jörg Dähler - Software Solutions";
+            this.label2.Text = "IT-NONSTOP";
             // 
             // label3
             // 
@@ -91,11 +91,11 @@
             this.label3.AutoSize = true;
             this.label3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(707, 45);
+            this.label3.Location = new System.Drawing.Point(769, 45);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(193, 19);
+            this.label3.Size = new System.Drawing.Size(131, 19);
             this.label3.TabIndex = 4;
-            this.label3.Text = "www.jdSoftwareSolutions.de";
+            this.label3.Text = "www.it-nonstop.de";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4

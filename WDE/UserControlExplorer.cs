@@ -26,16 +26,50 @@ namespace WDE
         private bool ShowDetails = false;
         private bool ShowPreview = false;
         private bool ShowNavigation = true;
+        private bool showSelected = false;
+        private int savedTabIndex = -1;
         public bool TabControlLocked = false;
         private TabControl currentTabControl;
         private string _lockedPath = "";
         
         private ToolStripButton contextTSB = null;
 
+        public TabControl CurrentTabControl 
+        {
+            get { return currentTabControl; }
+        }
+
         public string LockedPath
         {
             get { return _lockedPath; }
         }
+
+        public bool ShowSelected 
+        {
+            set 
+            {
+                optionSection.settings.GetItemByString("ShowSelected").Value = value.ToString();
+                showSelected = value; 
+            }
+            get
+            {
+                return showSelected;
+            }
+        }
+
+        public int SavedTabIndex
+        {
+            set
+            {
+                optionSection.settings.GetItemByString("savedTabIndex").Value = value.ToString();
+                savedTabIndex = value;
+            }
+            get
+            {
+                return savedTabIndex;
+            }
+        }
+
 
         public UserControlExplorer(string newSectionName, ApplicationSettings applicationSettingsValue, string name, TabControl destTabControl, TabPage tabPage)
         {
@@ -79,6 +113,24 @@ namespace WDE
                 explorerBrowser.NavigationOptions.PaneVisibility.Details = PaneVisibilityState.Show;
             else
                 explorerBrowser.NavigationOptions.PaneVisibility.Details = PaneVisibilityState.Hide;
+
+            //savedTabIndex
+            if (optionSection.settings.GetItemByString("savedTabIndex") == null)
+                optionSection.settings.Add("savedTabIndex", (destTabControl.TabPages.Count - 1).ToString());
+            else
+                SavedTabIndex = Convert.ToInt32(optionSection.settings.GetItemByString("savedTabIndex").Value); //destTabControl.TabPages.Count-1; //not delete
+
+
+            //ShowSelected
+            if (optionSection.settings.GetItemByString("ShowSelected") == null)
+                optionSection.settings.Add("ShowSelected", ShowSelected.ToString());
+            else
+            {
+                ShowSelected = Convert.ToBoolean(optionSection.settings.GetItemByString("ShowSelected").Value);
+                if (ShowSelected)
+                    destTabControl.SelectedTab = tabPage;
+
+            }
 
             //ShowPreview
             if (optionSection.settings.GetItemByString("ShowPreview") == null)
@@ -147,19 +199,27 @@ namespace WDE
                     this.tsbForward.Enabled = explorerBrowser.NavigationLog.CanNavigateForward;
                 }
 
-                //// update history combo box
+                // update history combo box
                 //if (args.LocationsChanged)
                 //{
-                //    this.navigationHistoryCombo.Items.Clear();
+                //    //this.navigationHistoryCombo.Items.Clear();
+                //    this.navigationHistoryComboItems.Items.Clear();
                 //    foreach (ShellObject shobj in this.explorerBrowser.NavigationLog.Locations)
                 //    {
-                //        this.navigationHistoryCombo.Items.Add(shobj.Name);
+                //        //this.navigationHistoryCombo.Items.Add(shobj.Name);
+                //        this.navigationHistoryComboItems.Items.Add(shobj.Name);
                 //    }
                 //}
                 //if (this.explorerBrowser.NavigationLog.CurrentLocationIndex == -1)
-                //    this.navigationHistoryCombo.Text = "";
+                //{
+                //    //this.navigationHistoryCombo.Text = "";
+                //    this.navigationHistoryComboItems.Text = "";
+                //}
                 //else
-                //    this.navigationHistoryCombo.SelectedIndex = this.explorerBrowser.NavigationLog.CurrentLocationIndex;
+                //{
+                //    //this.navigationHistoryCombo.SelectedIndex = this.explorerBrowser.NavigationLog.CurrentLocationIndex;
+                //    this.navigationHistoryComboItems.SelectedIndex = this.explorerBrowser.NavigationLog.CurrentLocationIndex;
+                //}
             }));
         }
 
@@ -250,15 +310,6 @@ namespace WDE
             //FormMain.setUserControlExplorer(this, currentTabControl);
         }
 
-        private void explorerBrowser_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F3)
-            {
-                //tsbViewer_Click(sender, null);
-                MessageBox.Show("F3");
-            }
-
-        }
 
         private void explorerBrowser_NavigationComplete(object sender, NavigationCompleteEventArgs e)
         {
@@ -273,15 +324,33 @@ namespace WDE
                 tsddbtn.Text = GetRootDriveFromPath(location);
 
                 tssl.Text = GetFreeDiskSpace(location);
-                navigationHistoryCombo.Text = location;
 
-                if (!navigationHistoryCombo.Items.Contains(location))
-                    navigationHistoryCombo.Items.Add(location);
+                if (location.Contains("::"))
+                {
+                    navigationHistoryCombo.Text = locationName;
 
-                SizePathTextbox();
+                    if (!navigationHistoryCombo.Items.Contains(locationName))
+                        navigationHistoryCombo.Items.Add(locationName);
 
-                if (pathChanged != null)
-                    this.pathChanged(location, locationName, this);
+                    SizePathTextbox();
+
+                    if (pathChanged != null)
+                        this.pathChanged(locationName, locationName, this);
+                }
+                else
+                {
+                    navigationHistoryCombo.Text = location;
+
+                    if (!navigationHistoryCombo.Items.Contains(location))
+                        navigationHistoryCombo.Items.Add(location);
+
+                    SizePathTextbox();
+
+                    if (pathChanged != null)
+                    {
+                        this.pathChanged(location, locationName, this);
+                    }
+                }
             }));
 
             this.OnMyEvent();
@@ -372,22 +441,24 @@ namespace WDE
 
         private void tsmiCopyFullnameToClipboard_Click(object sender, EventArgs e)
         {
-            ShellObject so = explorerBrowser.SelectedItems[0];
-            if (so != null)
+            string body = "";
+            foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
-                Clipboard.SetText(so.ParsingName);
+                body += so2.ParsingName + "\n";
             }
 
+            Clipboard.SetText(body);
         }
 
         private void tsmiCopyShortnameToClipboard_Click(object sender, EventArgs e)
         {
-            ShellObject so = explorerBrowser.SelectedItems[0];
-            if (so != null)
+            string body = "";
+            foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
-                Clipboard.SetText(so.Name);
+                body += so2.Name + "\n";
             }
 
+            Clipboard.SetText(body);
         }
 
         private void tsmShowDetails_Click(object sender, EventArgs e)
@@ -657,6 +728,9 @@ namespace WDE
         private void toolStripComboBoxPath_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangePath(navigationHistoryCombo.Text);
+
+            //navigationHistoryComboItems.SelectedIndex = navigationHistoryCombo.SelectedIndex;
+            //explorerBrowser.NavigateLogLocation(this.navigationHistoryComboItems.SelectedIndex);
         }
 
         private bool ChangePath(string newPath)
@@ -778,6 +852,60 @@ namespace WDE
 
             return true;
         }
+
+
+        public delegate void MyPreviewKeyDown(object sender, PreviewKeyDownEventArgs e, TabControl dTabControl);
+        public event MyPreviewKeyDown myPreviewKeyDown;
+
+        private void explorerBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (myPreviewKeyDown != null)
+                this.myPreviewKeyDown(sender, e, currentTabControl);
+
+            //MessageBox.Show("kkk");
+        }
+
+        private void sendFullnameViaEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            ShellObject so = explorerBrowser.SelectedItems[0];
+            if (so != null)
+            {
+                string subject = so.Name;
+                string body = "";// so.ParsingName;
+
+                foreach (ShellObject so2 in explorerBrowser.SelectedItems)
+	            {
+                    body += so2.ParsingName + "%0D%0A";
+                }
+
+                string s = "mailto:?body=" + body + "&subject=" + subject;
+                
+                System.Diagnostics.Process.Start(s);
+            }
+        }
+
+        private void sendShortnameViaEmailToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShellObject so = explorerBrowser.SelectedItems[0];
+            if (so != null)
+            {
+                string subject = so.Name;
+                string body = "";
+
+                foreach (ShellObject so2 in explorerBrowser.SelectedItems)
+                {
+                    body += so2.Name + "%0D%0A";
+                }
+
+                string s = "mailto:?body=" + body + "&subject=" + subject;
+
+                System.Diagnostics.Process.Start(s);
+            }
+
+        }
+
+
 
     }
 

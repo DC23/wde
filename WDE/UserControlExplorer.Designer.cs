@@ -43,6 +43,9 @@
             this.toolStripDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiCopyFullnameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCopyShortnameToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sendFullnameViaEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendShortnameViaEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbShow = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmShowDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmShowPreview = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +62,7 @@
             this.tsddbtn = new System.Windows.Forms.ToolStripDropDownButton();
             this.tssl = new System.Windows.Forms.ToolStripLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.ts.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -90,9 +94,9 @@
             this.ts.Size = new System.Drawing.Size(720, 25);
             this.ts.TabIndex = 19;
             this.ts.Text = "toolStrip4";
-            this.ts.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ts_MouseDown);
-            this.ts.DragEnter += new System.Windows.Forms.DragEventHandler(this.ts_DragEnter);
             this.ts.DragDrop += new System.Windows.Forms.DragEventHandler(this.ts_DragDrop);
+            this.ts.DragEnter += new System.Windows.Forms.DragEventHandler(this.ts_DragEnter);
+            this.ts.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ts_MouseDown);
             // 
             // contextMenuStrip
             // 
@@ -120,8 +124,8 @@
             this.tsbBack.Size = new System.Drawing.Size(23, 22);
             this.tsbBack.Text = "back";
             this.tsbBack.ToolTipText = "back";
-            this.tsbBack.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsbBack.Click += new System.EventHandler(this.tsbBack_Click);
+            this.tsbBack.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // tsbForward
             // 
@@ -131,8 +135,8 @@
             this.tsbForward.Name = "tsbForward";
             this.tsbForward.Size = new System.Drawing.Size(23, 22);
             this.tsbForward.Text = "forward";
-            this.tsbForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsbForward.Click += new System.EventHandler(this.tsbForward_Click);
+            this.tsbForward.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // toolStripSeparator1
             // 
@@ -147,8 +151,8 @@
             this.tsbSwitch.Name = "tsbSwitch";
             this.tsbSwitch.Size = new System.Drawing.Size(23, 22);
             this.tsbSwitch.Text = "sync to same folder as explorer 2";
-            this.tsbSwitch.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsbSwitch.Click += new System.EventHandler(this.tsbSwitch_Click);
+            this.tsbSwitch.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // tsbDel
             // 
@@ -159,8 +163,8 @@
             this.tsbDel.Name = "tsbDel";
             this.tsbDel.Size = new System.Drawing.Size(23, 22);
             this.tsbDel.Text = "delete";
-            this.tsbDel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsbDel.Click += new System.EventHandler(this.tsbDel_Click);
+            this.tsbDel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // toolStripSeparator13
             // 
@@ -175,15 +179,18 @@
             this.tsbViewer.Name = "tsbViewer";
             this.tsbViewer.Size = new System.Drawing.Size(23, 22);
             this.tsbViewer.Text = "Viewer";
-            this.tsbViewer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsbViewer.Click += new System.EventHandler(this.tsbViewer_Click);
+            this.tsbViewer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // toolStripDropDownButton
             // 
             this.toolStripDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiCopyFullnameToClipboard,
-            this.tsmiCopyShortnameToClipboard});
+            this.tsmiCopyShortnameToClipboard,
+            this.toolStripMenuItem1,
+            this.sendFullnameViaEmailToolStripMenuItem,
+            this.sendShortnameViaEmailToolStripMenuItem});
             this.toolStripDropDownButton.Image = global::WDE.Properties.Resources.clipboard;
             this.toolStripDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton.Name = "toolStripDropDownButton";
@@ -195,20 +202,39 @@
             // 
             this.tsmiCopyFullnameToClipboard.Image = global::WDE.Properties.Resources.clipboard;
             this.tsmiCopyFullnameToClipboard.Name = "tsmiCopyFullnameToClipboard";
-            this.tsmiCopyFullnameToClipboard.Size = new System.Drawing.Size(227, 22);
-            this.tsmiCopyFullnameToClipboard.Text = "copy fullname to clipboard";
+            this.tsmiCopyFullnameToClipboard.Size = new System.Drawing.Size(240, 22);
+            this.tsmiCopyFullnameToClipboard.Text = "copy fullname(s) to clipboard";
             this.tsmiCopyFullnameToClipboard.ToolTipText = "copy fullname to clipboard";
-            this.tsmiCopyFullnameToClipboard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsmiCopyFullnameToClipboard.Click += new System.EventHandler(this.tsmiCopyFullnameToClipboard_Click);
+            this.tsmiCopyFullnameToClipboard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // tsmiCopyShortnameToClipboard
             // 
             this.tsmiCopyShortnameToClipboard.Image = global::WDE.Properties.Resources.clipboard;
             this.tsmiCopyShortnameToClipboard.Name = "tsmiCopyShortnameToClipboard";
-            this.tsmiCopyShortnameToClipboard.Size = new System.Drawing.Size(227, 22);
-            this.tsmiCopyShortnameToClipboard.Text = "copy shortname to clipboard";
-            this.tsmiCopyShortnameToClipboard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
+            this.tsmiCopyShortnameToClipboard.Size = new System.Drawing.Size(240, 22);
+            this.tsmiCopyShortnameToClipboard.Text = "copy shortname(s) to clipboard";
             this.tsmiCopyShortnameToClipboard.Click += new System.EventHandler(this.tsmiCopyShortnameToClipboard_Click);
+            this.tsmiCopyShortnameToClipboard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(237, 6);
+            // 
+            // sendFullnameViaEmailToolStripMenuItem
+            // 
+            this.sendFullnameViaEmailToolStripMenuItem.Name = "sendFullnameViaEmailToolStripMenuItem";
+            this.sendFullnameViaEmailToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.sendFullnameViaEmailToolStripMenuItem.Text = "send fullname(s) via email";
+            this.sendFullnameViaEmailToolStripMenuItem.Click += new System.EventHandler(this.sendFullnameViaEmailToolStripMenuItem_Click);
+            // 
+            // sendShortnameViaEmailToolStripMenuItem
+            // 
+            this.sendShortnameViaEmailToolStripMenuItem.Name = "sendShortnameViaEmailToolStripMenuItem";
+            this.sendShortnameViaEmailToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.sendShortnameViaEmailToolStripMenuItem.Text = "send shortname(s) via email";
+            this.sendShortnameViaEmailToolStripMenuItem.Click += new System.EventHandler(this.sendShortnameViaEmailToolStripMenuItem_Click);
             // 
             // tsbShow
             // 
@@ -232,8 +258,8 @@
             this.tsmShowDetails.Name = "tsmShowDetails";
             this.tsmShowDetails.Size = new System.Drawing.Size(164, 22);
             this.tsmShowDetails.Text = "Show Details";
-            this.tsmShowDetails.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsmShowDetails.Click += new System.EventHandler(this.tsmShowDetails_Click);
+            this.tsmShowDetails.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // tsmShowPreview
             // 
@@ -241,8 +267,8 @@
             this.tsmShowPreview.Name = "tsmShowPreview";
             this.tsmShowPreview.Size = new System.Drawing.Size(164, 22);
             this.tsmShowPreview.Text = "Show Preview";
-            this.tsmShowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsmShowPreview.Click += new System.EventHandler(this.tsmShowPreview_Click);
+            this.tsmShowPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // tsmShowNavigation
             // 
@@ -250,8 +276,8 @@
             this.tsmShowNavigation.Name = "tsmShowNavigation";
             this.tsmShowNavigation.Size = new System.Drawing.Size(164, 22);
             this.tsmShowNavigation.Text = "Show Navigation";
-            this.tsmShowNavigation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             this.tsmShowNavigation.Click += new System.EventHandler(this.tsmShowNavigation_Click);
+            this.tsmShowNavigation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tsb_MouseDown);
             // 
             // toolStripSeparator11
             // 
@@ -271,17 +297,20 @@
             // 
             // explorerBrowser
             // 
+            this.explorerBrowser.AllowDrop = true;
+            this.explorerBrowser.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
+            this.explorerBrowser.BackColor = System.Drawing.SystemColors.Control;
             this.explorerBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.explorerBrowser.Location = new System.Drawing.Point(0, 50);
             this.explorerBrowser.Name = "explorerBrowser";
             this.explorerBrowser.PropertyBagName = "Microsoft.WindowsAPICodePack.Controls.WindowsForms.ExplorerBrowser";
             this.explorerBrowser.Size = new System.Drawing.Size(720, 382);
             this.explorerBrowser.TabIndex = 23;
-            this.explorerBrowser.NavigationComplete += new Microsoft.WindowsAPICodePack.Controls.ExplorerBrowserNavigationCompleteEventHandler(this.explorerBrowser_NavigationComplete);
             this.explorerBrowser.SelectionChanged += new Microsoft.WindowsAPICodePack.Controls.ExplorerBrowserSelectionChangedEventHandler(this.explorerBrowser_SelectionChanged);
-            this.explorerBrowser.Enter += new System.EventHandler(this.explorerBrowser_Enter);
             this.explorerBrowser.ItemsChanged += new Microsoft.WindowsAPICodePack.Controls.ExplorerBrowserItemsChangedEventHandler(this.explorerBrowser_ItemsChanged);
-            this.explorerBrowser.KeyDown += new System.Windows.Forms.KeyEventHandler(this.explorerBrowser_KeyDown);
+            this.explorerBrowser.NavigationComplete += new Microsoft.WindowsAPICodePack.Controls.ExplorerBrowserNavigationCompleteEventHandler(this.explorerBrowser_NavigationComplete);
+            this.explorerBrowser.Enter += new System.EventHandler(this.explorerBrowser_Enter);
+            this.explorerBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.explorerBrowser_PreviewKeyDown);
             // 
             // toolStrip1
             // 
@@ -338,9 +367,9 @@
             this.navigationHistoryCombo.Size = new System.Drawing.Size(606, 21);
             this.navigationHistoryCombo.TabIndex = 28;
             this.navigationHistoryCombo.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxPath_SelectedIndexChanged);
-            this.navigationHistoryCombo.Leave += new System.EventHandler(this.navigationHistoryCombo_Leave);
             this.navigationHistoryCombo.Enter += new System.EventHandler(this.navigationHistoryCombo_Enter);
             this.navigationHistoryCombo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripComboBoxPath_KeyDown);
+            this.navigationHistoryCombo.Leave += new System.EventHandler(this.navigationHistoryCombo_Leave);
             // 
             // toolStrip2
             // 
@@ -375,12 +404,23 @@
             this.tssl.Size = new System.Drawing.Size(15, 22);
             this.tssl.Text = "[]";
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Location = new System.Drawing.Point(0, 385);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(720, 22);
+            this.statusStrip.SizingGrip = false;
+            this.statusStrip.TabIndex = 27;
+            this.statusStrip.Text = "statusStrip1";
+            this.statusStrip.Visible = false;
+            // 
             // UserControlExplorer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.explorerBrowser);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.ts);
             this.Name = "UserControlExplorer";
@@ -431,5 +471,9 @@
         private System.Windows.Forms.ComboBox navigationHistoryCombo;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem sendFullnameViaEmailToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendShortnameViaEmailToolStripMenuItem;
     }
 }

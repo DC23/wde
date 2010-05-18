@@ -47,7 +47,7 @@ namespace WDE
         private void label3_Click(object sender, EventArgs e)
         {
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-            psi.FileName = "http://www.jdsoftwaresolutions.de";
+            psi.FileName = "http://www.it-nonstop.de";
 
             System.Diagnostics.Process.Start(psi);
 

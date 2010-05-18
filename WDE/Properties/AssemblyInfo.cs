@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Windows Double Explorer")]
 [assembly: AssemblyDescription("Windows Double Explorer manages two or more Windows Explorer in one application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("jdSoftwareSolutions")]
+[assembly: AssemblyCompany("IT-Nonstop")]
 [assembly: AssemblyProduct("WDE")]
-[assembly: AssemblyCopyright("Copyright © by Jörg Dähler - Software Solutions")]
-[assembly: AssemblyTrademark("Jörg Dähler - Software Solutions www.jdsolutions.de")]
+[assembly: AssemblyCopyright("Copyright © IT-Nonstop by Jörg Dähler")]
+[assembly: AssemblyTrademark("IT-Nonstop by Jörg Dähler www.it-nonstop.de")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.7.0")]
-[assembly: AssemblyFileVersion("0.3.7.0")]
+[assembly: AssemblyVersion("0.4.0.0")]
+[assembly: AssemblyFileVersion("0.4.0.0")]

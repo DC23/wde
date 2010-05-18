@@ -78,12 +78,14 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "FormViewer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Viewer";
             this.Load += new System.EventHandler(this.FormViewer_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormViewer_KeyDown);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

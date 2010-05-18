@@ -11,25 +11,26 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Controls;
-//using Microsoft.WindowsAPICodePack.Taskbar;
+using System.Threading;
 using System.Diagnostics;
 using System.IO;
 using jd.Helper.Configuration;
 using System.Net;
+using Microsoft.Win32;
 
 
 namespace WDE
 {
     public partial class FormMain : Form
     {
-        [DllImport("user32.dll",CharSet=CharSet.Auto, CallingConvention=CallingConvention.StdCall)]
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
         private const int MOUSEEVENTF_LEFTDOWN = 0x02;
         private const int MOUSEEVENTF_LEFTUP = 0x04;
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
-        
+
         const int TOPOFEACHOTHER = 1;
         const int NEXTTOEACHOTHER = 2;
         //int TabSheetCounter = 0;
@@ -78,10 +79,13 @@ namespace WDE
                 }
             }
 
+            sortPages(tabControl1);
+            sortPages(tabControl2);
+
             if (tabControl1.TabCount == 0)
                 AddExplorer(tabControl1, "", false);
             if (tabControl2.TabCount == 0)
-                AddExplorer(tabControl2, "",false);
+                AddExplorer(tabControl2, "", false);
 
             //
             if (Properties.Settings.Default.CallUpgrade)
@@ -97,7 +101,7 @@ namespace WDE
             Properties.Settings settings = Properties.Settings.Default;
             this.Size = settings.formsize;
 
-            if (Properties.Settings.Default.Layout == TOPOFEACHOTHER) 
+            if (Properties.Settings.Default.Layout == TOPOFEACHOTHER)
             {
                 panel1.Height = Properties.Settings.Default.Panel1H;
             }
@@ -120,6 +124,7 @@ namespace WDE
             if (this.Width < 50)
                 this.Width = 800;
 
+            WindowState = Properties.Settings.Default.WindowState;
 
             // initialize known folder combo box
             List<string> knownFolderList = new List<string>();
@@ -183,24 +188,37 @@ namespace WDE
             //
             TabPage tpnew2 = new TabPage();
             tpnew2.ImageIndex = 1;
-            tabControl2.TabPages.Add( tpnew2);
+            tabControl2.TabPages.Add(tpnew2);
 
 
             tabControl1_SelectedIndexChanged(null, null);
             tabControl2_SelectedIndexChanged(null, null);
+
+
+            //
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced");
+            if (regKey != null)
+            {
+                object regValue = regKey.GetValue("Hidden");
+                if (regValue != null)
+                {
+                    tsmiShowHiddenFiles.Checked = ((int)regValue != 0);
+                }
+            }
+
         }
 
 
         private void FormMain_Load(object sender, EventArgs e)
-        {            
-            if (_args.Length > 0) 
+        {
+            if (_args.Length > 0)
             {
 
                 try
                 {
                     string newPath = _args[0];
 
-                  //  newPath = Path.GetDirectoryName(newPath);
+                    //  newPath = Path.GetDirectoryName(newPath);
                     if (Directory.Exists(newPath))
                     {
 
@@ -229,8 +247,9 @@ namespace WDE
             Properties.Settings.Default.FormW = Width;
             Properties.Settings.Default.FormH = Height;
             Properties.Settings.Default.ViewToolbar = tsMain.Visible;
+            Properties.Settings.Default.WindowState = WindowState;
             settings.formsize = this.Size;
-            settings.Save();      
+            settings.Save();
 
             Properties.Settings.Default.Save();
         }
@@ -240,7 +259,7 @@ namespace WDE
             try
             {
                 // Navigate to a known folder
-                IKnownFolder kf = KnownFolderHelper.FromCanonicalName( this.tscbKnownFolder.Items[tscbKnownFolder.SelectedIndex].ToString());
+                IKnownFolder kf = KnownFolderHelper.FromCanonicalName(this.tscbKnownFolder.Items[tscbKnownFolder.SelectedIndex].ToString());
 
                 current_uce.explorerBrowser.Navigate((ShellObject)kf);
             }
@@ -260,8 +279,8 @@ namespace WDE
 
         private void tsbExplorer_Click(object sender, EventArgs e)
         {
-           string Programmname = "explorer.exe";
-           System.Diagnostics.Process.Start(Programmname, current_uce.explorerBrowser.NavigationLog.CurrentLocation.ParsingName); 
+            string Programmname = "explorer.exe";
+            System.Diagnostics.Process.Start(Programmname, current_uce.explorerBrowser.NavigationLog.CurrentLocation.ParsingName);
         }
 
 
@@ -278,11 +297,6 @@ namespace WDE
             Close();
         }
 
-
-        private void FormMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            //MessageBox.Show(e.KeyData.ToString());
-        }
 
 
         private void ClearLayout()
@@ -303,7 +317,7 @@ namespace WDE
         {
             if (tsbLayout1.Checked)
                 return;
-            
+
             //Übereinander
             Properties.Settings.Default.Layout = TOPOFEACHOTHER;
             tsbLayout1.Checked = true;
@@ -311,10 +325,21 @@ namespace WDE
 
             ClearLayout();
 
-            panel1.Dock = DockStyle.Top;
-            panel1.Height = (this.Height - menuStripMain.Height - tsMain.Height) / 2;
-            splitter.Dock = DockStyle.Top;
-            panel2.Dock = DockStyle.Fill;
+            if ((tsbShowHide1.Checked) && (tsbShowHide2.Checked))
+            {
+                panel1.Dock = DockStyle.Top;
+                panel1.Height = (this.Height - menuStripMain.Height - tsMain.Height) / 2;
+                splitter.Dock = DockStyle.Top;
+                panel2.Dock = DockStyle.Fill;
+            }
+            else if ((tsbShowHide1.Checked) && (!tsbShowHide2.Checked))
+            {
+                panel1.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                panel2.Dock = DockStyle.Fill;
+            }
 
             OrderLayout();
 
@@ -334,13 +359,26 @@ namespace WDE
 
             ClearLayout();
 
-            panel1.Dock = DockStyle.Left;
-            panel1.Width = panel1.Width = Properties.Settings.Default.Panel1W;
-            if (panel1.Width > (this.Width - 20))
-                panel1.Width = this.Width / 2;
-            splitter.Dock = DockStyle.Left;
-            panel2.Dock = DockStyle.Fill;
+            if ((tsbShowHide1.Checked) && (tsbShowHide2.Checked))
+            {
+                panel1.Dock = DockStyle.Left;
+                panel1.Width = panel1.Width = Properties.Settings.Default.Panel1W;
+                if (panel1.Width > (this.Width - 20))
+                    panel1.Width = this.Width / 2;
+                splitter.Dock = DockStyle.Left;
+                panel2.Dock = DockStyle.Fill;
+            }
+            else if ((tsbShowHide1.Checked) && (!tsbShowHide2.Checked))
+            {
+                panel1.Dock = DockStyle.Fill;
+                panel1.Width = panel1.Width = Properties.Settings.Default.Panel1W;
+            }
+            else
+            {
+                panel2.Dock = DockStyle.Fill;
 
+            }
+         
             OrderLayout();
 
             layout1ToolStripMenuItem.Checked = tsbLayout1.Checked;
@@ -395,7 +433,7 @@ namespace WDE
 
         private void tsbSwitch_Click_1(object sender, EventArgs e)
         {
-            ShellObject so=current_uce1.explorerBrowser.NavigationLog.CurrentLocation;
+            ShellObject so = current_uce1.explorerBrowser.NavigationLog.CurrentLocation;
             current_uce1.explorerBrowser.Navigate(current_uce2.explorerBrowser.NavigationLog.CurrentLocation);
             current_uce2.explorerBrowser.Navigate(so);
         }
@@ -426,6 +464,7 @@ namespace WDE
 
             AddExplorer(tc, "", true);
             tc.SelectedIndex = tc.TabCount - 2;
+            ReorderTabIDs(tc);
         }
 
         private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
@@ -439,6 +478,7 @@ namespace WDE
                 applicationSettings.sections.Remove(applicationSettings.sections.GetItemByString(removeSectionName, "OPTIONS"));
                 tc.TabPages.Remove(tp);
             }
+            ReorderTabIDs(tc);
         }
 
         private void cmsTabControl_Opening(object sender, CancelEventArgs e)
@@ -448,7 +488,8 @@ namespace WDE
             if (tc == null)
                 return;
 
-            tsmiLockTab.Checked = (tc.SelectedTab.ImageIndex == 0) || (tc.SelectedTab.ImageIndex == 2);
+            tsmiLockTab.Enabled = tc.SelectedTab.Text.Contains(":");
+            tsmiLockTab.Checked = ((tc.SelectedTab.ImageIndex == 0) || (tc.SelectedTab.ImageIndex == 2));
             tsmiResetTabPath.Enabled = (tsmiLockTab.Checked == true);
 
 
@@ -465,7 +506,7 @@ namespace WDE
                 tp.ImageIndex = -1;
 
             string sectionName = tp.Tag.ToString();
-            applicationSettings.sections.GetItemByString(sectionName, "OPTIONS").settings.GetItemByString("Locked").Value = 
+            applicationSettings.sections.GetItemByString(sectionName, "OPTIONS").settings.GetItemByString("Locked").Value =
                 tsmiLockTab.Checked.ToString();
 
             current_uce.TabControlLocked = tsmiLockTab.Checked;
@@ -659,7 +700,7 @@ namespace WDE
 
         private void RemoveFavItem(string name)
         {
-            foreach (ToolStripMenuItem  item in favoritesToolStripMenuItem.DropDownItems)
+            foreach (ToolStripMenuItem item in favoritesToolStripMenuItem.DropDownItems)
             {
                 if (item.Text == name)
                 {
@@ -797,22 +838,31 @@ namespace WDE
                 uce.Dock = DockStyle.Fill;
                 uce.MyEvent += new MyDelegate(GetMyEvent);
                 uce.pathChanged += new UserControlExplorer.PathChanged(this.path_Changed);
+                uce.myPreviewKeyDown += new UserControlExplorer.MyPreviewKeyDown(uce_myPreviewKeyDown);
+
                 return uce;
             }
 
             return null;
         }
 
+
         private void GetMyEvent(object sender, EventArgs e)
         {
-            current_uce = (sender as UserControlExplorer);
-            MarkTabControl(current_uce.Parent.Parent.Name);
+            try
+            {
+                current_uce = (sender as UserControlExplorer);
+
+                MarkTabControl(current_uce.Parent.Parent.Name);
+            }
+            catch (Exception) { }
 
             //Console.WriteLine((sender as UserControlExplorer).Parent.Parent.Name);
         }
 
         private void MarkTabControl(string tabControlName)
         {
+
             if (tabControlName == tabControl1.Name)
             {
                 panel1.BackColor = System.Drawing.Color.DimGray;
@@ -831,21 +881,21 @@ namespace WDE
 
         private void wwwjdSoftwareSolutionsdeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-            psi.FileName = "http://www.jdsoftwaresolutions.de/links/wde/";
-
-            System.Diagnostics.Process.Start(psi);
+            Run("http://www.it-nonstop.de/links/wde/");
         }
 
         private void wdecodeplexcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-            psi.FileName = "http://wde.codeplex.com";
-
-            System.Diagnostics.Process.Start(psi);
-
+            Run("http://wde.codeplex.com");
         }
 
+        private void Run(string AppName)
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+            psi.FileName = AppName;
+
+            System.Diagnostics.Process.Start(psi);
+        }
 
         public static string GetUrlResponse(string url, string username, string password, bool showMsgOnError)
         {
@@ -889,7 +939,7 @@ namespace WDE
 
         private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string webVersion = GetUrlResponse("http://www.jdsoftwaresolutions.de/links/wde/version.txt", "", "", false);
+            string webVersion = GetUrlResponse("http://www.it-nonstop.de/links/wde/version.txt", "", "", false);
             string currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (webVersion == "")
             {
@@ -902,9 +952,9 @@ namespace WDE
                 else
                     if (MessageBox.Show("A new version " + webVersion + " is available! Go to website for download?", "Version Info", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                     {
-                        //jdNETCF.Diagnostics.ProcessEx.RunApp(@"\Windows\iexplore.exe", @"http://www.jdsoftwaresolutions.de/links/jdmu/", false);
+                        //jdNETCF.Diagnostics.ProcessEx.RunApp(@"\Windows\iexplore.exe", @"http://www.it-nonstop.de/links/jdmu/", false);
                         System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-                        psi.FileName = "http://www.jdsoftwaresolutions.de/links/wde/";
+                        psi.FileName = "http://www.it-nonstop.de/links/wde/";
 
                         System.Diagnostics.Process.Start(psi);
                     }
@@ -1024,13 +1074,33 @@ namespace WDE
                     {
                         current_uce2 = (tabControlx.SelectedTab.Controls["UserControlExplorer"] as UserControlExplorer);
                         current_uce = current_uce2;
+
+
+                        //foreach (TabPage tp in tabControl2.TabPages)
+                        //{
+                        //    try
+                        //    {
+                        //        (tp.Controls["UserControlExplorer"] as UserControlExplorer).ShowSelected = false; ;
+                        //    }
+                        //    catch (Exception) { }
+                        //}
+
                     }
 
-                    
+                    foreach (TabPage tp in tabControlx.TabPages)
+                    {
+                        try
+                        {
+                            (tp.Controls["UserControlExplorer"] as UserControlExplorer).ShowSelected = false; ;
+                        }
+                        catch (Exception) { }
+                    }
+
                     MarkTabControl(tabControlx.Name);
                 }
                 catch (Exception) { }
             }
+            current_uce.ShowSelected = true;
         }
 
 
@@ -1098,7 +1168,7 @@ namespace WDE
         private void toolStripButton1_Click_3(object sender, EventArgs e)
         {
             Process P = new Process();
-            P.StartInfo.FileName= System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase;
+            P.StartInfo.FileName = System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase;
             P.Start();
         }
 
@@ -1139,7 +1209,7 @@ namespace WDE
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
             psi.FileName = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7438177";
 
-            System.Diagnostics.Process.Start(psi);            
+            System.Diagnostics.Process.Start(psi);
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
@@ -1194,6 +1264,276 @@ namespace WDE
                 cur_uce.explorerBrowser.Navigate(ShellFileSystemFolder.FromFolderPath(myDir));
             }
             catch (Exception) { }
+        }
+
+        private void issueTrackerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Run("http://wde.codeplex.com/WorkItem/List.aspx");
+        }
+
+        private void discussionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Run("http://wde.codeplex.com/Thread/List.aspx");
+        }
+
+        private void tsmiShowHiddenFiles_Click(object sender, EventArgs e)
+        {
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", true);
+            if (regKey != null)
+            {
+                int value = 0;
+                if (tsmiShowHiddenFiles.Checked == true)
+                    value = 1;
+
+                regKey.SetValue("Hidden", value, RegistryValueKind.DWord);
+
+                if (current_uce1.explorerBrowser.NavigationLog.CurrentLocation.Parent != null)
+                {
+                    current_uce1.explorerBrowser.Navigate(current_uce1.explorerBrowser.NavigationLog.CurrentLocation.Parent);
+                }
+
+                if (current_uce2.explorerBrowser.NavigationLog.CurrentLocation.Parent != null)
+                    current_uce2.explorerBrowser.Navigate(current_uce2.explorerBrowser.NavigationLog.CurrentLocation.Parent);
+
+                current_uce1.explorerBrowser.NavigateLogLocation(NavigationLogDirection.Backward);
+                current_uce2.explorerBrowser.NavigateLogLocation(NavigationLogDirection.Backward);
+                
+                //RefreshAllExplorer();
+            }
+        }
+
+        private void RefreshAllExplorer()
+        {
+            MessageBox.Show("Pls press F5 to refresh");
+
+            //for future use
+        }
+
+        private void tsmiPlus_Click(object sender, EventArgs e)
+        {
+            TabControl tc = (cmsTabControl.SourceControl as TabControl);
+
+            if (tc == null)
+                return;
+
+            TabUp(tc);
+        }
+
+        private void TabUp(TabControl tc)
+        {
+            TabPage tp = tc.SelectedTab;
+            if (tp != null)
+            {
+                int i = tc.SelectedIndex;
+
+                if (i >= tc.TabPages.Count - 2)
+                    return;
+
+                TabPage tp2 = tc.TabPages[tc.SelectedIndex + 1];
+
+                tc.TabPages[tc.SelectedIndex] = tp2;
+                tc.TabPages[tc.SelectedIndex + 1] = tp;
+
+                tc.SelectedIndex = i + 1;
+
+                ReorderTabIDs(tc);
+            }
+        }
+
+        private void tsmiMinus_Click(object sender, EventArgs e)
+        {
+            TabControl tc = (cmsTabControl.SourceControl as TabControl);
+
+            if (tc == null)
+                return;
+
+            TabDown(tc);
+        }
+
+        private void TabDown(TabControl tc)
+        {
+            TabPage tp = tc.SelectedTab;
+            if (tp != null)
+            {
+                int i = tc.SelectedIndex;
+
+                if (i == 0)
+                    return;
+
+                TabPage tp2 = tc.TabPages[tc.SelectedIndex - 1];
+
+                tc.TabPages[tc.SelectedIndex] = tp2;
+                tc.TabPages[tc.SelectedIndex - 1] = tp;
+
+                tc.SelectedIndex = i - 1;
+
+                ReorderTabIDs(tc);
+            }
+        }
+
+        private void ReorderTabIDs(TabControl tc)
+        {
+            for (int j = 0; j < tc.TabPages.Count - 1; j++)
+            {
+                (tc.TabPages[j].Controls["UserControlExplorer"] as UserControlExplorer).SavedTabIndex = j;
+            }
+        }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Add))
+                TabUp(current_uce.CurrentTabControl);
+            else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Subtract))
+                TabDown(current_uce.CurrentTabControl);
+            else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.U))
+            {
+                if (current_uce == current_uce1)
+                    current_uce = current_uce2;
+                else
+                    current_uce = current_uce1;
+
+                MarkTabControl(current_uce.Parent.Parent.Name);
+                current_uce.Focus();
+            }
+
+            //MessageBox.Show(e.KeyData.ToString());
+            //if ((e.KeyCode == Keys.Alt) && (e.KeyCode == Keys.D1))
+            //if ((e.Modifiers == Keys.Control ) &&(e.KeyCode==Keys.D1))
+            //    MessageBox.Show("AAA");
+
+        }
+
+
+        void uce_myPreviewKeyDown(object sender, PreviewKeyDownEventArgs e, TabControl dTabControl)
+        {
+            if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Add))
+                TabUp(dTabControl);
+            else if ((e.Modifiers == Keys.Control) && (e.KeyCode == Keys.Subtract))
+                TabDown(dTabControl);
+        }
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabPage CurrentTab = tabControl1.TabPages[e.Index];
+            Rectangle ItemRect = tabControl1.GetTabRect(e.Index);
+            //SolidBrush FillBrush = new SolidBrush(SystemColors.ControlDarkDark);
+            SolidBrush TextBrush = new SolidBrush(Color.White);
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            sf.LineAlignment = StringAlignment.Center;
+
+            //If we are currently painting the Selected TabItem we'll
+            //change the brush colors and inflate the rectangle.
+            if (System.Convert.ToBoolean(e.State & DrawItemState.Selected))
+            {
+                //FillBrush.Color = Color.White;
+                TextBrush.Color = Color.Red;
+                ItemRect.Inflate(2, 2);
+            }
+
+            //Set up rotation for left and right aligned tabs
+            if (tabControl1.Alignment == TabAlignment.Left || tabControl1.Alignment == TabAlignment.Right)
+            {
+                float RotateAngle = 90;
+                if (tabControl1.Alignment == TabAlignment.Left)
+                    RotateAngle = 270;
+                PointF cp = new PointF(ItemRect.Left + (ItemRect.Width / 2), ItemRect.Top + (ItemRect.Height / 2));
+                e.Graphics.TranslateTransform(cp.X, cp.Y);
+                e.Graphics.RotateTransform(RotateAngle);
+                ItemRect = new Rectangle(-(ItemRect.Height / 2), -(ItemRect.Width / 2), ItemRect.Height, ItemRect.Width);
+            }
+
+            //Next we'll paint the TabItem with our Fill Brush
+            //e.Graphics.FillRectangle(FillBrush, ItemRect);
+
+            //Now draw the text.
+            e.Graphics.DrawString(CurrentTab.Text, e.Font, TextBrush, (RectangleF)ItemRect, sf);
+
+            //Reset any Graphics rotation
+            e.Graphics.ResetTransform();
+
+            //Finally, we should Dispose of our brushes.
+            //FillBrush.Dispose();
+            TextBrush.Dispose();
+            //Font TabFont;
+            //Brush BackBrush = new SolidBrush(Color.White); //Set background color
+            //Brush ForeBrush = new SolidBrush(Color.DarkGray);//Set foreground color
+            //if (e.Index == this.tabControl1.SelectedIndex)
+            //{
+            //    //TabFont = new Font(e.Font, FontStyle.Italic | FontStyle.Bold);
+            //    TabFont = new Font(e.Font, FontStyle.Underline);
+
+            //}
+            //else
+            //{
+            //    TabFont = e.Font;
+            //}
+            //string TabName = this.tabControl1.TabPages[e.Index].Text;
+            //StringFormat sf = new StringFormat();
+            //sf.Alignment = StringAlignment.Center;
+            //e.Graphics.FillRectangle(BackBrush, e.Bounds);
+            //Rectangle r = e.Bounds;
+            //r = new Rectangle(r.X, r.Y + 3, r.Width, r.Height - 3);
+            //e.Graphics.DrawString(TabName, TabFont, ForeBrush, r, sf);
+            ////Dispose objects
+            //sf.Dispose();
+            //if (e.Index == this.tabControl1.SelectedIndex)
+            //{
+            //    TabFont.Dispose();
+            //    BackBrush.Dispose();
+            //    ForeBrush.Dispose();
+
+            //}
+            //else
+            //{
+            //    BackBrush.Dispose();
+            //    ForeBrush.Dispose();
+            //}
+        }
+
+
+        private void sortPages(TabControl tc)
+        {
+            for (int i = 0; i < tc.TabPages.Count - 1; i++)
+            {
+                TabPage tp = tc.TabPages[i];
+                int id = (tp.Controls["UserControlExplorer"] as UserControlExplorer).SavedTabIndex;
+
+                for (int j = i + 1; j < tc.TabPages.Count; j++)
+                {
+                    TabPage tp2 = tc.TabPages[j];
+                    int id2 = (tp2.Controls["UserControlExplorer"] as UserControlExplorer).SavedTabIndex;
+
+                    if (id > id2)
+                    {
+                        tc.TabPages[j] = tp;
+                        tc.TabPages[i] = tp2;
+                        break;
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < tc.TabPages.Count; i++)
+            {
+                TabPage tp = tc.TabPages[i];
+                if ((tp.Controls["UserControlExplorer"] as UserControlExplorer).ShowSelected == true)
+                {
+                    tc.SelectedIndex = i;
+                    break;
+                }
+
+            }
+        }
+
+        private void tsmiMoveTabUp_Click(object sender, EventArgs e)
+        {
+            TabUp(current_uce.CurrentTabControl);
+        }
+
+        private void tsmiMoveTabDown_Click(object sender, EventArgs e)
+        {
+            TabDown(current_uce.CurrentTabControl);
         }
 
 
