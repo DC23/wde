@@ -165,6 +165,13 @@ namespace WDE.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap mail {
+            get {
+                object obj = ResourceManager.GetObject("mail", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap new_tab {
             get {
                 object obj = ResourceManager.GetObject("new_tab", resourceCulture);

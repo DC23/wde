@@ -442,9 +442,16 @@ namespace WDE
         private void tsmiCopyFullnameToClipboard_Click(object sender, EventArgs e)
         {
             string body = "";
+            int i = 0;
+
             foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
-                body += so2.ParsingName + "\n";
+                i++;
+
+                if (i < explorerBrowser.SelectedItems.Count)
+                    body += so2.ParsingName + "\n";
+                else
+                    body += so2.ParsingName;
             }
 
             Clipboard.SetText(body);
@@ -453,9 +460,16 @@ namespace WDE
         private void tsmiCopyShortnameToClipboard_Click(object sender, EventArgs e)
         {
             string body = "";
+            int i = 0;
+
             foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
-                body += so2.Name + "\n";
+                i++;
+
+                if (i < explorerBrowser.SelectedItems.Count)
+                    body += so2.Name + "\n";
+                else
+                    body += so2.Name;
             }
 
             Clipboard.SetText(body);
@@ -867,16 +881,21 @@ namespace WDE
 
         private void sendFullnameViaEmailToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             ShellObject so = explorerBrowser.SelectedItems[0];
             if (so != null)
             {
                 string subject = so.Name;
                 string body = "";// so.ParsingName;
+                int i = 0;
 
                 foreach (ShellObject so2 in explorerBrowser.SelectedItems)
 	            {
-                    body += so2.ParsingName + "%0D%0A";
+                    i++;
+
+                    if (i < explorerBrowser.SelectedItems.Count)
+                        body += so2.ParsingName + "%0D%0A";
+                    else
+                        body += so2.ParsingName;
                 }
 
                 string s = "mailto:?body=" + body + "&subject=" + subject;
@@ -892,10 +911,16 @@ namespace WDE
             {
                 string subject = so.Name;
                 string body = "";
+                int i = 0;
 
                 foreach (ShellObject so2 in explorerBrowser.SelectedItems)
                 {
-                    body += so2.Name + "%0D%0A";
+                    i++;
+
+                    if (i < explorerBrowser.SelectedItems.Count)
+                        body += so2.Name + "%0D%0A";
+                    else
+                        body += so2.Name;
                 }
 
                 string s = "mailto:?body=" + body + "&subject=" + subject;

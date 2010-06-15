@@ -224,6 +224,7 @@
             // 
             // sendFullnameViaEmailToolStripMenuItem
             // 
+            this.sendFullnameViaEmailToolStripMenuItem.Image = global::WDE.Properties.Resources.mail;
             this.sendFullnameViaEmailToolStripMenuItem.Name = "sendFullnameViaEmailToolStripMenuItem";
             this.sendFullnameViaEmailToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.sendFullnameViaEmailToolStripMenuItem.Text = "send fullname(s) via email";
@@ -231,6 +232,7 @@
             // 
             // sendShortnameViaEmailToolStripMenuItem
             // 
+            this.sendShortnameViaEmailToolStripMenuItem.Image = global::WDE.Properties.Resources.mail;
             this.sendShortnameViaEmailToolStripMenuItem.Name = "sendShortnameViaEmailToolStripMenuItem";
             this.sendShortnameViaEmailToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.sendShortnameViaEmailToolStripMenuItem.Text = "send shortname(s) via email";
