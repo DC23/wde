@@ -446,12 +446,14 @@ namespace WDE
 
             foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
+                body += so2.ParsingName;
+
                 i++;
 
                 if (i < explorerBrowser.SelectedItems.Count)
-                    body += so2.ParsingName + "\n";
-                else
-                    body += so2.ParsingName;
+                    body += "\n";
+                //else
+                  //  body += so2.ParsingName;
             }
 
             Clipboard.SetText(body);
@@ -464,12 +466,13 @@ namespace WDE
 
             foreach (ShellObject so2 in explorerBrowser.SelectedItems)
             {
+                body += so2.Name;
+
                 i++;
 
                 if (i < explorerBrowser.SelectedItems.Count)
-                    body += so2.Name + "\n";
-                else
-                    body += so2.Name;
+                    body += "\n";
+                    
             }
 
             Clipboard.SetText(body);
@@ -890,12 +893,13 @@ namespace WDE
 
                 foreach (ShellObject so2 in explorerBrowser.SelectedItems)
 	            {
+                    body += so2.ParsingName;
+
                     i++;
 
                     if (i < explorerBrowser.SelectedItems.Count)
-                        body += so2.ParsingName + "%0D%0A";
-                    else
-                        body += so2.ParsingName;
+                        body += "%0D%0A";                    
+                        
                 }
 
                 string s = "mailto:?body=" + body + "&subject=" + subject;
@@ -915,12 +919,13 @@ namespace WDE
 
                 foreach (ShellObject so2 in explorerBrowser.SelectedItems)
                 {
+                    body += so2.Name;
+
                     i++;
 
                     if (i < explorerBrowser.SelectedItems.Count)
-                        body += so2.Name + "%0D%0A";
-                    else
-                        body += so2.Name;
+                        body += "%0D%0A";
+                        
                 }
 
                 string s = "mailto:?body=" + body + "&subject=" + subject;
