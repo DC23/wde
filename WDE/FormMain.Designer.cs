@@ -689,7 +689,7 @@
             this.infoToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.infoToolStripMenuItem.Text = "&About";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -834,7 +834,7 @@
             this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Windows Double Explorer";
+            this.Text = "Windows Double Explorer ";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
