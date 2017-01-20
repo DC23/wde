@@ -94,14 +94,6 @@
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkForUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wdecodeplexcomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.issueTrackerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.discussionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tsbSwitch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
@@ -398,20 +390,20 @@
             this.tsmiMainResetTabPath.Image = global::WDE.Properties.Resources.sync;
             this.tsmiMainResetTabPath.Name = "tsmiMainResetTabPath";
             this.tsmiMainResetTabPath.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.tsmiMainResetTabPath.Size = new System.Drawing.Size(241, 22);
+            this.tsmiMainResetTabPath.Size = new System.Drawing.Size(239, 22);
             this.tsmiMainResetTabPath.Text = "Reset path from all tabs";
             this.tsmiMainResetTabPath.Click += new System.EventHandler(this.tsmiMainResetTabPath_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(238, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(236, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exitToolStripMenuItem.Image")));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -641,7 +633,7 @@
             // mapNetworkDriveToolStripMenuItem
             // 
             this.mapNetworkDriveToolStripMenuItem.Name = "mapNetworkDriveToolStripMenuItem";
-            this.mapNetworkDriveToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.mapNetworkDriveToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.mapNetworkDriveToolStripMenuItem.Text = "Map network drive";
             this.mapNetworkDriveToolStripMenuItem.Visible = false;
             this.mapNetworkDriveToolStripMenuItem.Click += new System.EventHandler(this.mapNetworkDriveToolStripMenuItem_Click);
@@ -649,21 +641,21 @@
             // disconnectDriveToolStripMenuItem
             // 
             this.disconnectDriveToolStripMenuItem.Name = "disconnectDriveToolStripMenuItem";
-            this.disconnectDriveToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.disconnectDriveToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.disconnectDriveToolStripMenuItem.Text = "Disconnect network drive";
             this.disconnectDriveToolStripMenuItem.Click += new System.EventHandler(this.disconnectDriveToolStripMenuItem_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(209, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(207, 6);
             // 
             // tsmiShowHiddenFiles
             // 
             this.tsmiShowHiddenFiles.CheckOnClick = true;
             this.tsmiShowHiddenFiles.Name = "tsmiShowHiddenFiles";
             this.tsmiShowHiddenFiles.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.tsmiShowHiddenFiles.Size = new System.Drawing.Size(212, 22);
+            this.tsmiShowHiddenFiles.Size = new System.Drawing.Size(210, 22);
             this.tsmiShowHiddenFiles.Text = "Show hidden files";
             this.tsmiShowHiddenFiles.Click += new System.EventHandler(this.tsmiShowHiddenFiles_Click);
             // 
@@ -685,15 +677,7 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.infoToolStripMenuItem,
-            this.checkForUpdateToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem,
-            this.wdecodeplexcomToolStripMenuItem,
-            this.issueTrackerToolStripMenuItem,
-            this.discussionsToolStripMenuItem,
-            this.toolStripMenuItem6,
-            this.donateToolStripMenuItem});
+            this.infoToolStripMenuItem});
             this.helpToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -706,65 +690,8 @@
             this.infoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("infoToolStripMenuItem.Image")));
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             this.infoToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.infoToolStripMenuItem.Text = "Infos";
+            this.infoToolStripMenuItem.Text = "&About";
             this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
-            // 
-            // checkForUpdateToolStripMenuItem
-            // 
-            this.checkForUpdateToolStripMenuItem.Image = global::WDE.Properties.Resources.update;
-            this.checkForUpdateToolStripMenuItem.Name = "checkForUpdateToolStripMenuItem";
-            this.checkForUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.checkForUpdateToolStripMenuItem.Text = "Check for Update";
-            this.checkForUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdateToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(173, 6);
-            // 
-            // wwwjdSoftwareSolutionsdeToolStripMenuItem
-            // 
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Name = "wwwjdSoftwareSolutionsdeToolStripMenuItem";
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Text = "www.it-nonstop.de";
-            this.wwwjdSoftwareSolutionsdeToolStripMenuItem.Click += new System.EventHandler(this.wwwjdSoftwareSolutionsdeToolStripMenuItem_Click);
-            // 
-            // wdecodeplexcomToolStripMenuItem
-            // 
-            this.wdecodeplexcomToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
-            this.wdecodeplexcomToolStripMenuItem.Name = "wdecodeplexcomToolStripMenuItem";
-            this.wdecodeplexcomToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.wdecodeplexcomToolStripMenuItem.Text = "wde.codeplex.com";
-            this.wdecodeplexcomToolStripMenuItem.Click += new System.EventHandler(this.wdecodeplexcomToolStripMenuItem_Click);
-            // 
-            // issueTrackerToolStripMenuItem
-            // 
-            this.issueTrackerToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
-            this.issueTrackerToolStripMenuItem.Name = "issueTrackerToolStripMenuItem";
-            this.issueTrackerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.issueTrackerToolStripMenuItem.Text = "Issue Tracker";
-            this.issueTrackerToolStripMenuItem.Click += new System.EventHandler(this.issueTrackerToolStripMenuItem_Click);
-            // 
-            // discussionsToolStripMenuItem
-            // 
-            this.discussionsToolStripMenuItem.Image = global::WDE.Properties.Resources.link;
-            this.discussionsToolStripMenuItem.Name = "discussionsToolStripMenuItem";
-            this.discussionsToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.discussionsToolStripMenuItem.Text = "Discussions";
-            this.discussionsToolStripMenuItem.Click += new System.EventHandler(this.discussionsToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(173, 6);
-            // 
-            // donateToolStripMenuItem
-            // 
-            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
-            this.donateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.donateToolStripMenuItem.Text = "Donate";
-            this.donateToolStripMenuItem.Click += new System.EventHandler(this.donateToolStripMenuItem_Click);
             // 
             // tsMain
             // 
@@ -907,7 +834,7 @@
             this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Windows Double Explorer - www.it-nonstop.de - v";
+            this.Text = "Windows Double Explorer";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Shown += new System.EventHandler(this.FormMain_Shown);
@@ -985,10 +912,6 @@
         private System.Windows.Forms.ToolStripMenuItem openExplorerToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         public System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem wwwjdSoftwareSolutionsdeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wdecodeplexcomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem checkForUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStripFav;
         private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mapNetworkDriveToolStripMenuItem;
@@ -999,10 +922,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiResetTabPath;
         private System.Windows.Forms.ToolStripMenuItem tsmiMainResetTabPath;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem issueTrackerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem discussionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem tsmiShowHiddenFiles;
         private System.Windows.Forms.ToolStripMenuItem tsmiMoveTabUp;
