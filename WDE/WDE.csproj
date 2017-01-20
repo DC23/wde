@@ -12,10 +12,10 @@
     <AssemblyName>WDE</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ManifestCertificateThumbprint>C66486FFA09155E8A6D1FE588B4DEF131B036CC3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>97018CFD88F7C9E3FE940F218AB281539DA2C658</ManifestCertificateThumbprint>
     <ManifestKeyFile>WDE_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>Projekt 1.ico</ApplicationIcon>
     <StartupObject>WDE.Program</StartupObject>
@@ -26,7 +26,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <PublishUrl>D:\Projekte\jd\WDE\WDE\publish\</PublishUrl>
+    <PublishUrl>.\publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -233,7 +233,6 @@
     <None Include="Resources\layout1.png" />
     <None Include="Resources\layout2.png" />
     <None Include="Resources\explorer.png" />
-    <None Include="WDE_TemporaryKey.pfx" />
     <Content Include="Projekt 1.ico" />
     <None Include="Resources\clipboard.png" />
     <None Include="Resources\1.png" />
