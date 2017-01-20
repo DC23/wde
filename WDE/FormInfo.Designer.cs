@@ -45,7 +45,7 @@
             this.textBox1.Location = new System.Drawing.Point(12, 133);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(888, 357);
+            this.textBox1.Size = new System.Drawing.Size(582, 424);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "ABC";
             this.textBox1.WordWrap = false;
@@ -76,7 +76,7 @@
             this.lblVersion.AutoSize = true;
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.Location = new System.Drawing.Point(146, 45);
+            this.lblVersion.Location = new System.Drawing.Point(147, 44);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(61, 19);
             this.lblVersion.TabIndex = 6;
@@ -86,7 +86,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 502);
+            this.ClientSize = new System.Drawing.Size(606, 569);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
@@ -97,7 +97,7 @@
             this.Name = "FormInfo";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Info\'s";
+            this.Text = "About WDE";
             this.Load += new System.EventHandler(this.FormInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
