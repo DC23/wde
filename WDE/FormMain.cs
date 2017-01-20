@@ -879,11 +879,6 @@ namespace WDE
             }
         }
 
-        private void wwwjdSoftwareSolutionsdeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Run("http://www.it-nonstop.de/links/wde/");
-        }
-
         private void wdecodeplexcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Run("http://wde.codeplex.com");
@@ -933,33 +928,6 @@ namespace WDE
             }
 
             return content.ToString();
-        }
-
-
-
-        private void checkForUpdateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string webVersion = GetUrlResponse("http://www.it-nonstop.de/links/wde/version.txt", "", "", false);
-            string currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (webVersion == "")
-            {
-                MessageBox.Show("Can't retrieve version information from internet!", "Error");
-            }
-            else
-            {
-                if (webVersion == currentVersion)
-                    MessageBox.Show("Your version " + webVersion + " is the current version!", "Version Info");
-                else
-                    if (MessageBox.Show("A new version " + webVersion + " is available! Go to website for download?", "Version Info", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                    {
-                        //jdNETCF.Diagnostics.ProcessEx.RunApp(@"\Windows\iexplore.exe", @"http://www.it-nonstop.de/links/jdmu/", false);
-                        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-                        psi.FileName = "http://www.it-nonstop.de/links/wde/";
-
-                        System.Diagnostics.Process.Start(psi);
-                    }
-            }
-
         }
 
         private void tabControl1_DoubleClick(object sender, EventArgs e)
@@ -1204,14 +1172,6 @@ namespace WDE
             }
         }
 
-        private void donateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-            psi.FileName = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7438177";
-
-            System.Diagnostics.Process.Start(psi);
-        }
-
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //string systemFolder = @"C:\Windows";
@@ -1266,16 +1226,6 @@ namespace WDE
             catch (Exception) { }
         }
 
-        private void issueTrackerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Run("http://wde.codeplex.com/WorkItem/List.aspx");
-        }
-
-        private void discussionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Run("http://wde.codeplex.com/Thread/List.aspx");
-        }
-
         private void tsmiShowHiddenFiles_Click(object sender, EventArgs e)
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", true);
@@ -1304,9 +1254,8 @@ namespace WDE
 
         private void RefreshAllExplorer()
         {
-            MessageBox.Show("Pls press F5 to refresh");
-
-            //for future use
+            MessageBox.Show("Please press F5 to refresh");
+            // TODO - implement this
         }
 
         private void tsmiPlus_Click(object sender, EventArgs e)
