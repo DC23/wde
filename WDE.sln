@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDE", "WDE\WDE.csproj", "{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E} = {C2A80328-ABA3-49A2-B346-153CAC8E7A9E}
-	EndProjectSection
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,11 +18,6 @@ Global
 		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CF7E282-98D8-4AB6-9E7D-F5740DFB8CB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.CodeAnalysisDebug|Any CPU.ActiveCfg = Debug
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.CodeAnalysisDebug|Any CPU.Build.0 = Debug
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Debug|Any CPU.ActiveCfg = Debug
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Release|Any CPU.ActiveCfg = Release
-		{C2A80328-ABA3-49A2-B346-153CAC8E7A9E}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
